@@ -673,6 +673,162 @@ a {
   margin: 0;
 }
 
+/* 5.1 Secao: Ecossistema Completo (#ecossistema) */
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.ecosystem-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.35s ease;
+}
+
+.ecosystem-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--border-active);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
+}
+
+.ecosystem-card.is-partner {
+  background: linear-gradient(180deg, #1A1F2B 0%, #12151D 100%);
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 35px -10px rgba(245, 158, 11, 0.15);
+}
+
+.ecosystem-card.is-partner:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 20px 50px -10px rgba(245, 158, 11, 0.35);
+}
+
+.ecosystem-badge {
+  position: absolute;
+  top: -12px;
+  left: 30px;
+  background: var(--accent-racing);
+  color: #FFFFFF;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.6);
+}
+
+.ecosystem-badge.partner {
+  background: var(--accent-gold);
+  color: #0A0B0E;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+}
+
+.ecosystem-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(220, 38, 38, 0.12);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-racing);
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.ecosystem-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ecosystem-card:hover .ecosystem-icon-wrapper {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+}
+
+.is-partner .ecosystem-icon-wrapper {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: var(--accent-gold);
+}
+
+.is-partner:hover .ecosystem-icon-wrapper {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.ecosystem-header {
+  margin-bottom: 20px;
+}
+
+.ecosystem-kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-racing);
+  margin-bottom: 6px;
+}
+
+.ecosystem-kicker.partner-text {
+  color: var(--accent-gold);
+}
+
+.ecosystem-header h3 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.ecosystem-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  min-height: 64px;
+}
+
+.ecosystem-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.ecosystem-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.partner-check {
+  color: var(--accent-gold) !important;
+}
+
+.ecosystem-card .button {
+  width: 100%;
+}
+
 /* 6. Secao 3: As 3 Camadas de Revisao (#revisoes) */
 .plans-grid {
   display: grid;
@@ -1213,6 +1369,11 @@ a {
   .split-heading {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+  .ecosystem-grid {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-inline: auto;
   }
   .plans-grid {
     grid-template-columns: 1fr;
