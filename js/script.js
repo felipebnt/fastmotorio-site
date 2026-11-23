@@ -186,9 +186,9 @@
     }, { passive: true });
   }
 
-  // 3.1 Vídeo 2: Showcase de Motocicletas de Alta Performance (#padrao)
+  // 3.1 Vídeo 2: Showcase de Motocicletas de Alta Performance (#equipe)
   (() => {
-    const fig = document.querySelector('.standards-vehicle-showcase');
+    const fig = document.querySelector('.team-showcase-wrapper, .standards-vehicle-showcase');
     const v = fig && fig.querySelector('video.showcase-video');
     if (!v) return;
     const end = () => Math.max(0, (v.duration || 0) - 0.05);
