@@ -1624,12 +1624,25 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 85%;
-  height: 75%;
-  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.16) 0%, rgba(220, 38, 38, 0.08) 45%, transparent 75%);
-  filter: blur(45px);
+  width: 95%;
+  height: 85%;
+  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.22) 0%, rgba(220, 38, 38, 0.12) 45%, transparent 75%);
+  filter: blur(50px);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Camada cenografica de vinheta e desvanecimento aveludado nas extremidades */
+.team-showcase-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, #0A0B0E 0%, transparent 20%, transparent 80%, #0A0B0E 100%),
+    linear-gradient(to right, #0A0B0E 0%, transparent 15%, transparent 85%, #0A0B0E 100%),
+    radial-gradient(ellipse at center, transparent 35%, rgba(10, 11, 14, 0.75) 70%, #0A0B0E 95%);
 }
 
 .team-showcase-wrapper .showcase-video {
