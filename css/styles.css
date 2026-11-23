@@ -1498,3 +1498,219 @@ a {
     font-size: 11px;
   }
 }
+
+/* ========================================================
+   ESTILOS DOS VÍDEOS INTERATIVOS E CATÁLOGO DE SERVIÇOS
+   ======================================================== */
+
+/* Vídeo 2: Showcase de Motos no Padrão */
+.standards-vehicle-showcase {
+  width: min(calc(100% - var(--gutter) * 2), var(--max));
+  margin: 40px auto 0;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #000;
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+.standards-vehicle-showcase .showcase-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* Vídeo 3: Bastidores e Equipe no Galpão */
+.team-video-box {
+  position: relative;
+  grid-column: 1 / -1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #000;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+.team-video-box video.team-scroll-video {
+  display: none;
+}
+
+.team-video-box .team-video-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.team-video-box .team-video-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* Catálogo Oficial de 11 Serviços */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.service-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-racing), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(220, 38, 38, 0.4);
+  box-shadow: 0 14px 32px -10px rgba(0, 0, 0, 0.7);
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+.service-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.service-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-racing);
+  transition: all 0.3s ease;
+}
+
+.service-icon-wrapper svg {
+  width: 22px;
+  height: 22px;
+}
+
+.service-card:hover .service-icon-wrapper {
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(220, 38, 38, 0.35);
+}
+
+.service-number {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.service-card h3 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.service-card p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 20px 0;
+  flex-grow: 1;
+}
+
+.service-card .service-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent-racing);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.service-card:hover .service-cta {
+  color: #FFFFFF;
+  gap: 12px;
+}
+
+.service-card.is-featured-partner {
+  background: linear-gradient(180deg, #1A1F2B 0%, #12151D 100%);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.service-card.is-featured-partner:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 16px 36px -10px rgba(245, 158, 11, 0.25);
+}
+
+.service-card.is-featured-partner .service-icon-wrapper {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: var(--accent-gold);
+}
+
+.service-card.is-featured-partner .service-cta {
+  color: var(--accent-gold);
+}
+
+@media (max-width: 992px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+  .standards-vehicle-showcase {
+    margin-top: 24px;
+    border-radius: 12px;
+  }
+  .team-video-box {
+    border-radius: 12px;
+  }
+}

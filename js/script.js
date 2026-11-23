@@ -186,6 +186,112 @@
     }, { passive: true });
   }
 
+  // 3.1 Vídeo 2: Showcase de Motocicletas de Alta Performance (#padrao)
+  (() => {
+    const fig = document.querySelector('.standards-vehicle-showcase');
+    const v = fig && fig.querySelector('video.showcase-video');
+    if (!v) return;
+    const end = () => Math.max(0, (v.duration || 0) - 0.05);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.addEventListener('loadedmetadata', () => { v.currentTime = end(); });
+      return;
+    }
+    v.pause();
+    let ready = false, seeking = false, target = 0, raf = 0;
+    const progress = () => {
+      const r = fig.getBoundingClientRect(), vh = window.innerHeight;
+      return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.6 + r.height * 0.4)));
+    };
+    const tick = () => {
+      raf = 0;
+      if (!ready || !Number.isFinite(v.duration)) return;
+      target = progress() * end();
+      if (!seeking && Math.abs(v.currentTime - target) > 0.03) {
+        seeking = true;
+        v.currentTime = target;
+      }
+    };
+    const request = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    v.addEventListener('seeked', () => {
+      seeking = false;
+      if (Math.abs(v.currentTime - target) > 0.03) request();
+    });
+    v.addEventListener('loadedmetadata', () => { ready = true; tick(); });
+    v.addEventListener('loadeddata', () => { ready = true; tick(); });
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request, { passive: true });
+    v.load();
+    if (v.readyState >= 1) { ready = true; tick(); }
+  })();
+
+  // 3.2 Vídeo 3: Bastidores Técnicos e Equipe no Galpão (#galpao)
+  (() => {
+    const box = document.querySelector('.team-video-box');
+    const v = box && box.querySelector('.team-scroll-video');
+    const c = box && box.querySelector('.team-video-canvas');
+    if (!box || !v || !c) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = c.getContext('2d', { alpha: false, desynchronized: true });
+    let ready = false, seeking = false, target = 0, raf = 0;
+    const end = () => Math.max(0, (v.duration || 0) - 0.05);
+
+    const drawTeamFrame = () => {
+      if (v.readyState < 2 || !v.videoWidth || !v.videoHeight) return;
+      const dpr = window.devicePixelRatio || 1;
+      const w = c.width = c.clientWidth * dpr;
+      const h = c.height = c.clientHeight * dpr;
+      const scale = Math.max(w / v.videoWidth, h / v.videoHeight);
+      const dw = v.videoWidth * scale;
+      const dh = v.videoHeight * scale;
+      const dx = (w - dw) / 2;
+      const dy = (h - dh) / 2;
+      ctx.drawImage(v, dx, dy, dw, dh);
+    };
+
+    const progress = () => {
+      const r = box.getBoundingClientRect(), vh = window.innerHeight;
+      return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.6 + r.height * 0.4)));
+    };
+
+    const tick = () => {
+      raf = 0;
+      if (!ready || !Number.isFinite(v.duration)) return;
+      target = progress() * end();
+      if (!seeking && Math.abs(v.currentTime - target) > 0.03) {
+        seeking = true;
+        v.currentTime = target;
+      }
+    };
+
+    const request = () => { if (!raf) raf = requestAnimationFrame(tick); };
+
+    v.addEventListener('seeked', () => {
+      seeking = false;
+      drawTeamFrame();
+      if (Math.abs(v.currentTime - target) > 0.03) request();
+    });
+
+    v.addEventListener('loadedmetadata', () => { ready = true; tick(); });
+    v.addEventListener('loadeddata', () => {
+      ready = true;
+      drawTeamFrame();
+      tick();
+    });
+
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', () => {
+      drawTeamFrame();
+      request();
+    }, { passive: true });
+
+    v.load();
+    if (v.readyState >= 2) {
+      ready = true;
+      drawTeamFrame();
+      tick();
+    }
+  })();
+
   // 4. Smooth Scroll para links internos
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
