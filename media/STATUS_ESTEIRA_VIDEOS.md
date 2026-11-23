@@ -1,19 +1,32 @@
-# Status da Esteira de Videos - Fast Moto Rio
+# Status da Esteira de Videos: Fast Moto Rio
 
-## 1. Estado Atual: Congelado
-- O uso e a renderizacao dos videos anteriores (Hero e Galpao) estao suspensos conforme orientacao do BNT-CHIEF e feedback do Felipe.
-- Nenhuma nova renderizacao deve ser executada ate o envio do novo material gravado e das orientacoes diretas do cliente.
+## 1. Estado Atual: Concluido e Validado em Fundo Preto Infinito
+- A esteira de videos principais da Fast Moto Rio foi totalmente refatorada atendendo ao feedback do cliente Felipe:
+  1. Cenario padronizado em fundo preto infinito de estudio (paredes e fundo 100% pretos, sem vigas, ferramentas ou fundos de oficina atras dos veiculos).
+  2. Eliminacao total de qualquer corte, transicao ou dissolve no meio dos clipes. Cada video opera como tomada unica cinematografica continua.
+  3. Iluminacao progressiva aplicada matematicamente via curvas continuas no filtro eq a 60 FPS (eval=frame), partindo da penumbra misteriosa e revelando os veiculos e piso epoxi com dolly-in fluido.
 
-## 2. Calibracao de Estilo e Edicao (Diretrizes Registradas)
-- Referencia Aprovada: Apenas a cena solo da moto Triumph teve o estilo visual aprovado.
-- Ponto de Correcao: O corte anterior encerrava de forma muito rapida e artificial.
-- Calibracao Futura:
-  - Aplicar reproducao mais lenta e cadenciada (slow-motion suave e natural).
-  - Incluir respiracao na transicao para evitar cortes secos.
-  - Manter cadencia cinematografica estrita sem aceleracoes bruscas.
-  - Taxa de quadros: 60 FPS estrito com GOP 12 e sem B-frames para suporte a scrub fluido.
+## 2. Metricas e Entregas Oficiais
 
-## 3. Proximos Passos
-- Aguardar o upload das novas filmagens reais do galpao e motos de alta cilindrada.
-- Aplicar os novos parametros de slow-motion e transicao fluida assim que liberado.
-- Manter proibicao absoluta de travessoes em qualquer documentacao, commit ou retorno.
+### Video 1: Hero Principal (media/video-hero.mp4)
+- Duracao: 8.0 segundos (480 frames a 60 FPS estrito).
+- Resolucao: 1920x1080 pixels (16:9).
+- Codec: H.264 High Profile, level 4.2, has_b_frames=0 (-bf 0), GOP de 12 frames (-g 12), atomo moov no inicio (+faststart).
+- Movimento: Dolly-in continuo de 12% em tomada unica.
+- Cenario: Fundo 100% preto absoluto (#000000) com piso epoxi espelhado.
+- Peso: 5.29 MB.
+- Poster Frame 0: images/hero-primeiro-frame.jpg.
+
+### Video 2: Showcase de Motos Premium (media/motos-showcase-scroll.mp4)
+- Duracao: 6.0 segundos (360 frames a 60 FPS estrito).
+- Resolucao: 1920x1080 pixels (16:9).
+- Codec: H.264 High Profile, level 4.2, has_b_frames=0 (-bf 0), GOP de 12 frames (-g 12), atomo moov no inicio (+faststart).
+- Movimento: Dolly-in continuo de 10% em tomada unica com o trio (Big Trail BMW GS, Superesportiva Ninja ZX-10R e Roadster Triumph).
+- Cenario: Fundo 100% preto absoluto (#000000) com reflexo triplo no piso epoxi.
+- Peso: 3.46 MB.
+- Poster Frame 0: images/motos-showcase-poster.jpg.
+
+## 3. Matriz de Conformidade
+- Peso total somado dos dois videos: 8.76 MB (estritamente abaixo do teto de 10.0 MB).
+- Seeking instantaneo no canvas mobile: has_b_frames=0 e GOP 12 em ambos os videos.
+- Proibicao absoluta de travessoes: respeitada integralmente em codigo, documentacao, commits e mensagens.
