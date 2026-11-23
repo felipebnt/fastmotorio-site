@@ -80,16 +80,16 @@ a {
   left: 0;
   right: 0;
   margin-inline: auto;
-  width: min(calc(100% - 32px), var(--max));
+  width: min(calc(100% - 32px), 1260px);
   height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  background: rgba(14, 17, 23, 0.7);
+  padding: 0 16px 0 24px;
+  background: rgba(13, 15, 19, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
   transition: all 0.3s ease;
 }
@@ -113,9 +113,9 @@ a {
 }
 
 .brand-logo-img {
-  height: 38px;
+  height: 26px;
   width: auto;
-  max-width: 210px;
+  max-width: 190px;
   display: block;
   object-fit: contain;
   transition: transform 0.2s ease;
@@ -127,8 +127,8 @@ a {
 
 @media (max-width: 640px) {
   .brand-logo-img {
-    height: 28px;
-    max-width: 160px;
+    height: 24px;
+    max-width: 150px;
   }
 }
 
@@ -152,7 +152,7 @@ a {
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
@@ -186,24 +186,35 @@ a {
 .header-cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: var(--accent-racing);
   color: #FFFFFF;
-  padding: 8px 18px;
+  padding: 10px 22px;
   border-radius: 9999px;
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   transition: all 0.2s ease;
-  box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 0 16px rgba(220, 38, 38, 0.4);
+}
+
+.header-cta .cta-arrow {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1;
+  transition: transform 0.2s ease;
 }
 
 .header-cta:hover {
   background: var(--accent-racing-hover);
   transform: translateY(-1px);
-  box-shadow: 0 0 22px rgba(220, 38, 38, 0.7);
+  box-shadow: 0 0 24px rgba(220, 38, 38, 0.7);
+}
+
+.header-cta:hover .cta-arrow {
+  transform: translate(2px, -2px);
 }
 
 .menu-toggle {
@@ -593,102 +604,139 @@ a {
   margin: 0;
 }
 
-.split-heading {
+.split-heading,
+.standards-grid-ref,
+.team-grid-ref {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: clamp(36px, 6vw, 80px);
-  align-items: start;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 24px;
+  align-items: stretch;
 }
 
-.standards-left h2 {
+.standards-manifesto-card,
+.team-manifesto-card {
+  background: #101216;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: clamp(32px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.manifesto-title,
+.standards-manifesto-card h2,
+.team-manifesto-card h2 {
   font-family: var(--font-heading);
-  font-size: clamp(28px, 3.8vw, 50px);
+  font-size: clamp(28px, 3.4vw, 46px);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  margin: 12px 0 20px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 10px 0 0 0;
   text-transform: uppercase;
 }
 
+.manifesto-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 24px 0;
+}
+
 .standards-lead {
-  font-size: clamp(15px, 1.25vw, 18px);
+  font-size: clamp(15px, 1.25vw, 17px);
   line-height: 1.65;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .standards-quote {
-  background: rgba(20, 23, 30, 0.5);
+  background: rgba(20, 23, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-left: 3px solid var(--accent-racing);
   padding: 18px 22px;
   border-radius: 0 12px 12px 0;
   font-size: 14px;
   line-height: 1.6;
   color: var(--text-primary);
-  margin-top: 32px;
+  margin-top: auto;
 }
 
 .standards-quote strong {
   color: var(--accent-racing);
 }
 
+.standards-cards-stack,
+.team-cards-stack,
 .standards-grid {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  justify-content: center;
 }
 
+.standard-feature-card,
 .standard-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  padding: 28px;
-  position: relative;
+  background: #101216;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 26px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
   transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
+.standard-feature-card:hover,
 .standard-card:hover {
   border-color: rgba(220, 38, 38, 0.4);
   transform: translateX(4px);
-  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 20px -5px rgba(220, 38, 38, 0.15);
 }
 
-.standard-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+.feature-checkbox {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid rgba(220, 38, 38, 0.6);
+  background: rgba(220, 38, 38, 0.12);
+  display: grid;
+  place-items: center;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.25);
+  margin-top: 2px;
 }
 
-.card-number {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--accent-racing);
-  letter-spacing: 0.1em;
+.feature-checkbox svg {
+  width: 18px;
+  height: 18px;
+  color: #FFFFFF;
 }
 
-.card-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
+.feature-content {
+  flex: 1;
 }
 
-.standard-card h3 {
+.feature-content h3 {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
 }
 
-.standard-card p {
+.feature-content p {
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -1386,9 +1434,11 @@ a {
   .glass-bridge {
     grid-template-columns: repeat(2, 1fr);
   }
-  .split-heading {
+  .split-heading,
+  .standards-grid-ref,
+  .team-grid-ref {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
   .ecosystem-grid {
     grid-template-columns: 1fr;
@@ -1427,7 +1477,24 @@ a {
   .site-header {
     height: 56px;
     padding: 0 16px;
-    border-radius: 16px;
+    border-radius: 9999px;
+  }
+  .standard-feature-card,
+  .standard-card {
+    padding: 20px;
+    gap: 16px;
+  }
+  .feature-checkbox {
+    width: 32px;
+    height: 32px;
+  }
+  .feature-checkbox svg {
+    width: 16px;
+    height: 16px;
+  }
+  .standards-manifesto-card,
+  .team-manifesto-card {
+    padding: 28px 20px;
   }
   .menu-toggle {
     display: flex;
@@ -1503,19 +1570,21 @@ a {
    ESTILOS DOS VÍDEOS INTERATIVOS E CATÁLOGO DE SERVIÇOS
    ======================================================== */
 
-/* Vídeo 2: Showcase de Motos no Padrão */
-.standards-vehicle-showcase {
-  width: min(calc(100% - var(--gutter) * 2), var(--max));
-  margin: 40px auto 0;
-  border-radius: 18px;
+/* Vídeo 2: Showcase de Motos na Equipe / Padrão */
+.standards-vehicle-showcase,
+.team-showcase-wrapper {
+  width: 100%;
+  margin: 0 0 36px 0;
+  border-radius: 20px;
   overflow: hidden;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   background: #000;
-  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.85);
   position: relative;
 }
 
-.standards-vehicle-showcase .showcase-video {
+.standards-vehicle-showcase .showcase-video,
+.team-showcase-wrapper .showcase-video {
   display: block;
   width: 100%;
   height: auto;
