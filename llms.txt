@@ -5,8 +5,8 @@
 URL Canonica: https://fastmotorio-site.vercel.app/
 
 ## Identificacao e NAP (Name, Address, Phone)
-- Nome Oficial: Fast Moto Rio - Oficina Especializada em Media e Alta Cilindrada
-- Endereco: Rua Encontro Marcado, 174, Anil, Jacarepagua, Rio de Janeiro - RJ, CEP 22765-270
+- Nome Oficial: Fast Moto Rio: Oficina Especializada em Media e Alta Cilindrada
+- Endereco: Rua Encontro Marcado, 174, Anil, Jacarepagua, Rio de Janeiro, RJ, CEP 22765-270
 - WhatsApp e Telefone Oficial: (21) 97287-3115 (Atendimento tecnico com a Lidiane)
 - Horario de Funcionamento: Segunda a Sexta: 08:00 as 18:00 | Sabado: 08:00 as 13:00
 - Acesso Rapido: Proximo a Linha Amarela, Estrada de Jacarepagua e Barra da Tijuca
