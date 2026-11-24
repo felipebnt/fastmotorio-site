@@ -11,12 +11,12 @@
 ### Video 1: Hero Principal (media/video-hero.mp4)
 - Duracao: 8.0 segundos (480 frames / 480 keyframes a 60 FPS estrito).
 - Resolucao: 1920x1080 pixels (16:9).
-- Acabamento: Vermelho Racing metalico (#DC2626) e fibra de carbono com farois de LED frontais.
-- Enquadramento: Perspectiva 100% frontal no quadrante direito (X=70%), metade esquerda 100% preta (#000000).
+- Origem: Video cinematico de alta fidelidade do Google Flow (raw_flow_motorcycle_headlights.mp4), com interpolacao de movimento bidirecional para 60 FPS (Passo 3) e reencode All-Intra (Passo 4).
+- Efeito Visual: Superesportiva com acendimento progressivo e cinematografico dos farois duplos de LED em estudio escuro com fundo preto infinito.
 - Parametros de Encode: libx264, x264-params keyint=1:min-keyint=1:scenecut=0, -g 1, -crf 18, -preset slow, -pix_fmt yuv420p, +faststart, -an.
-- Proporcao Keyframes: 480 I-frames em 480 frames (100% All-Intra).
-- Peso: 18.45 MB.
-- Poster Frame 0: images/hero-primeiro-frame.jpg.
+- Proporcao Keyframes: 480 I-frames em 480 frames (100% All-Intra, 0 P-frames, 0 B-frames).
+- Peso: 22.74 MB.
+- Poster Frame 0: images/hero-primeiro-frame.jpg (extraido do frame 0 exato).
 
 ### Video 2: Showcase de Motos Premium (media/motos-showcase-scroll.mp4)
 - Duracao: 6.0 segundos (360 frames / 360 keyframes a 60 FPS estrito).

@@ -295,10 +295,18 @@ a {
 
 .hero-scrim {
   z-index: 1;
-  background: linear-gradient(90deg, rgba(10, 11, 14, 0.96) 0%, rgba(10, 11, 14, 0.82) 40%, rgba(10, 11, 14, 0.25) 65%, transparent 100%),
-              linear-gradient(0deg, rgba(10, 11, 14, 0.95) 0%, transparent 40%);
+  background:
+    linear-gradient(90deg,
+      rgba(10, 11, 14, 0.98) 0%,
+      rgba(10, 11, 14, 0.94) 32%,
+      rgba(10, 11, 14, 0.85) 48%,
+      rgba(10, 11, 14, 0.45) 62%,
+      rgba(10, 11, 14, 0.15) 75%,
+      transparent 88%
+    ),
+    linear-gradient(0deg, rgba(10, 11, 14, 0.95) 0%, transparent 35%);
   pointer-events: none;
-  transition: opacity 0.2s ease-out;
+  transition: opacity 0.25s ease-out;
 }
 
 .hero-content {
@@ -374,6 +382,7 @@ a {
   color: var(--text-primary);
   letter-spacing: -0.03em;
   margin-bottom: 6px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
 }
 
 .hero-title-highlight {
@@ -431,6 +440,7 @@ a {
   line-height: 1.6;
   color: var(--text-secondary);
   margin-bottom: 22px;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
 }
 
 .hero-actions {
@@ -449,6 +459,7 @@ a {
   font-size: 11.5px;
   color: var(--text-secondary);
   flex-wrap: wrap;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
 }
 
 .hero-social-proof .stars {
@@ -1561,6 +1572,15 @@ a {
   }
   .header-cta {
     display: none;
+  }
+  .hero-scrim {
+    background:
+      linear-gradient(180deg,
+        rgba(10, 11, 14, 0.96) 0%,
+        rgba(10, 11, 14, 0.90) 52%,
+        rgba(10, 11, 14, 0.45) 75%,
+        rgba(10, 11, 14, 0.95) 100%
+      );
   }
   .hero-content {
     top: 96px;
