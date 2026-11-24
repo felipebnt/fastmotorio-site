@@ -63,34 +63,70 @@
     reveals.forEach((el) => el.classList.add('is-visible'));
   }
 
-  // 3. Engine de Video Scrubbing no Canvas da Hero
-  const heroSection = document.querySelector('#inicio');
+  // 3. Engine de Scroll Cinema no Canvas da Hero (#inicio)
+  const hero = document.querySelector('#inicio');
   const heroVideo = document.querySelector('.hero-media');
   const heroCanvas = document.querySelector('.hero-canvas');
+  const heroContent = document.querySelector('.hero-content');
+  const heroScrim = document.querySelector('.hero-scrim');
+  const heroIndex = document.querySelector('.hero-index');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  const updateHeroVisibility = () => {
-    if (!heroSection) return;
-    const sectionTop = heroSection.getBoundingClientRect().top;
-    const sectionHeight = heroSection.offsetHeight;
-    const scrollRange = Math.max(1, sectionHeight - window.innerHeight);
-    const progress = Math.min(1, Math.max(0, -sectionTop / scrollRange));
-    const finished = progress >= 0.999;
-    const passed = sectionTop + sectionHeight <= 0;
-
-    document.body.classList.toggle('hero-passed', passed);
-    document.body.classList.toggle('hero-finished', finished);
+  const updateHeroUI = (p) => {
+    if (heroContent) {
+      if (p <= 0.4) {
+        heroContent.style.opacity = '1';
+        heroContent.style.transform = 'translate3d(0, 0, 0)';
+        heroContent.style.pointerEvents = 'auto';
+      } else {
+        const fadeProgress = Math.min(1, Math.max(0, (p - 0.4) / 0.45));
+        const opacity = Math.max(0, 1 - Math.pow(fadeProgress, 1.4));
+        const translateY = -fadeProgress * 36;
+        heroContent.style.opacity = opacity.toFixed(3);
+        heroContent.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+        heroContent.style.pointerEvents = opacity < 0.05 ? 'none' : 'auto';
+      }
+    }
+    if (heroScrim) {
+      if (p <= 0.4) {
+        heroScrim.style.opacity = '1';
+      } else {
+        const fadeProgress = Math.min(1, Math.max(0, (p - 0.4) / 0.45));
+        const scrimOpacity = Math.max(0.35, 1 - fadeProgress * 0.65);
+        heroScrim.style.opacity = scrimOpacity.toFixed(3);
+      }
+    }
+    if (heroIndex) {
+      heroIndex.style.opacity = p > 0.85 ? Math.max(0, 1 - (p - 0.85) / 0.1).toFixed(2) : '1';
+    }
   };
 
-  updateHeroVisibility();
-  window.addEventListener('scroll', updateHeroVisibility, { passive: true });
-  window.addEventListener('resize', updateHeroVisibility, { passive: true });
-
-  if (heroVideo && heroCanvas && !reduceMotion.matches) {
+  if (reduceMotion.matches) {
+    // Em prefers-reduced-motion, NUNCA zerar ou colapsar a altura da secao
+    updateHeroUI(0);
+    if (heroVideo && heroCanvas) {
+      const context = heroCanvas.getContext('2d', { alpha: false });
+      const drawStatic = () => {
+        if (!context || heroVideo.readyState < 2 || !heroVideo.videoWidth || !heroVideo.videoHeight) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = (heroCanvas.width = heroCanvas.clientWidth * dpr);
+        const h = (heroCanvas.height = heroCanvas.clientHeight * dpr);
+        const scale = Math.max(w / heroVideo.videoWidth, h / heroVideo.videoHeight);
+        const dw = heroVideo.videoWidth * scale;
+        const dh = heroVideo.videoHeight * scale;
+        context.drawImage(heroVideo, (w - dw) / 2, (h - dh) / 2, dw, dh);
+      };
+      heroVideo.addEventListener('loadeddata', drawStatic);
+      heroVideo.load();
+      if (heroVideo.readyState >= 2) drawStatic();
+    }
+  } else if (hero && heroVideo && heroCanvas) {
     heroVideo.preload = 'auto';
     heroVideo.pause();
 
-    const context = heroCanvas.getContext('2d', { alpha: false });
+    const context = heroCanvas.getContext('2d', { alpha: false, desynchronized: true });
+    let cachedW = 0;
+    let cachedH = 0;
     let heroReady = false;
     let desiredTime = 0;
     let seeking = false;
@@ -100,24 +136,60 @@
     let shownFrame = -1;
     const FPS = 60;
 
+    const resizeCanvas = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.round(heroCanvas.clientWidth * dpr);
+      const h = Math.round(heroCanvas.clientHeight * dpr);
+      if (w !== cachedW || h !== cachedH) {
+        cachedW = heroCanvas.width = w;
+        cachedH = heroCanvas.height = h;
+      }
+    };
+
     const drawFrame = () => {
       if (!context || heroVideo.readyState < 2 || !heroVideo.videoWidth || !heroVideo.videoHeight) {
         return;
       }
-      const dpr = window.devicePixelRatio || 1;
-      const w = (heroCanvas.width = heroCanvas.clientWidth * dpr);
-      const h = (heroCanvas.height = heroCanvas.clientHeight * dpr);
-      const scale = Math.max(w / heroVideo.videoWidth, h / heroVideo.videoHeight);
+      if (!cachedW || !cachedH) resizeCanvas();
+      const scale = Math.max(cachedW / heroVideo.videoWidth, cachedH / heroVideo.videoHeight);
       const dw = heroVideo.videoWidth * scale;
       const dh = heroVideo.videoHeight * scale;
-      const dx = (w - dw) / 2;
-      const dy = (h - dh) / 2;
+      const dx = (cachedW - dw) / 2;
+      const dy = (cachedH - dh) / 2;
 
       context.drawImage(heroVideo, dx, dy, dw, dh);
     };
 
+    const getDuration = () => {
+      const d = heroVideo.duration;
+      return Number.isFinite(d) && d > 0 ? d : 0;
+    };
+
+    const checkReady = () => {
+      if (!heroReady && heroVideo.readyState >= 1 && getDuration() > 0) {
+        heroReady = true;
+        scrubHero();
+        if (heroVideo.readyState >= 2) {
+          drawFrame();
+        }
+      }
+    };
+
+    const scrubHero = () => {
+      const rect = hero.getBoundingClientRect();
+      const maxScroll = rect.height - window.innerHeight;
+      const p = Math.min(1, Math.max(0, -rect.top / maxScroll));
+
+      updateHeroUI(p);
+
+      const dur = getDuration();
+      if (!heroReady || dur <= 0) return;
+      desiredTime = Math.min(dur - 0.05, p * dur);
+    };
+
     const smoothFrame = (now) => {
-      if (heroReady && Number.isFinite(heroVideo.duration) && heroVideo.duration > 0) {
+      const dur = getDuration();
+      if (heroReady && dur > 0) {
         const dt = Math.min(32, Math.max(1, now - (lastTick || now)));
         lastTick = now;
 
@@ -136,32 +208,20 @@
         if (targetFrame !== shownFrame && !seeking) {
           shownFrame = targetFrame;
           seeking = true;
-          heroVideo.currentTime = Math.min(heroVideo.duration - 0.05, targetFrame / FPS);
+          heroVideo.currentTime = Math.min(dur - 0.05, targetFrame / FPS);
         }
       }
       rafId = requestAnimationFrame(smoothFrame);
     };
 
-    const scrubHero = () => {
-      updateHeroVisibility();
-      if (!heroReady || !Number.isFinite(heroVideo.duration) || heroVideo.duration <= 0) return;
-      const sectionTop = heroSection ? heroSection.getBoundingClientRect().top : 0;
-      const sectionHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
-      const scrollRange = Math.max(1, sectionHeight - window.innerHeight);
-      const progress = Math.min(1, Math.max(0, -sectionTop / scrollRange));
-      desiredTime = Math.min(heroVideo.duration - 0.05, progress * heroVideo.duration);
-    };
-
-    heroVideo.addEventListener('loadedmetadata', () => {
-      heroReady = true;
-      scrubHero();
-    });
-
+    heroVideo.addEventListener('loadedmetadata', checkReady);
     heroVideo.addEventListener('loadeddata', () => {
-      heroReady = true;
+      checkReady();
       drawFrame();
       scrubHero();
     });
+    heroVideo.addEventListener('canplay', checkReady);
+    heroVideo.addEventListener('canplaythrough', checkReady);
 
     heroVideo.addEventListener('seeked', () => {
       seeking = false;
@@ -170,20 +230,23 @@
 
     heroVideo.addEventListener('play', () => heroVideo.pause());
 
+    // Leitura imediata de readyState >= 1 no bind sem esperar eventos futuros
+    checkReady();
     heroVideo.load();
-
+    checkReady();
     if (heroVideo.readyState >= 2) {
-      heroReady = true;
       drawFrame();
-      scrubHero();
     }
 
     rafId = requestAnimationFrame(smoothFrame);
     window.addEventListener('scroll', scrubHero, { passive: true });
     window.addEventListener('resize', () => {
+      resizeCanvas();
       scrubHero();
       drawFrame();
     }, { passive: true });
+
+    scrubHero();
   }
 
   // 3.1 Vídeo 2: Showcase de Motocicletas de Alta Performance (#equipe)
