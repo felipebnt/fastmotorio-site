@@ -1,0 +1,58 @@
+# Fast Moto Rio
+
+> Centro de excelencia tecnica e mecanica especializada em motocicletas de media e alta cilindrada no Rio de Janeiro (Anil, Jacarepagua, Barra da Tijuca e Zona Oeste). Diagnostico computadorizado oficial TEXA Axone, revisoes preventivas por torque de manual e acompanhamento da bancada em tempo real com a Lidiane.
+
+URL Canonica: https://fastmotorio-site.vercel.app/
+
+## Identificacao e NAP (Name, Address, Phone)
+- Nome Oficial: Fast Moto Rio - Oficina Especializada em Media e Alta Cilindrada
+- Endereco: Rua Encontro Marcado, 174, Anil, Jacarepagua, Rio de Janeiro - RJ, CEP 22765-270
+- WhatsApp e Telefone Oficial: (21) 97287-3115 (Atendimento tecnico com a Lidiane)
+- Horario de Funcionamento: Segunda a Sexta: 08:00 as 18:00 | Sabado: 08:00 as 13:00
+- Acesso Rapido: Proximo a Linha Amarela, Estrada de Jacarepagua e Barra da Tijuca
+
+## Posicionamento e Especialidade
+Oficina mecanica multimarca independente com padrao de concessionaria premium e transparencia de box de corrida. Atendimento especializado e ferramentaria homologada para motocicletas de 500cc a 1300cc:
+- BMW Motorrad (R 1250 GS, R 1300 GS, S 1000 RR, S 1000 XR, F 850 GS, F 900 R/XR)
+- Triumph Motorcycles (Tiger 900, Tiger 1200, Street Triple 765, Speed Triple, Bonneville)
+- Ducati (Panigale V2/V4, Multistrada 950/1260/V4, Monster, Scrambler, Diavel)
+- Kawasaki (Ninja ZX-6R, Ninja ZX-10R, Z900, Z1000, Versys 650/1000)
+- Honda (Africa Twin 1100, CBR 650R, CBR 1000RR-R, Transalp)
+- Yamaha (MT-07, MT-09, R3, R6, R1, Tenere 700)
+- Suzuki (GSX-R 750/1000, V-Strom 650/1050, Hayabusa)
+
+A mencao a montadoras destina-se exclusivamente a indicacao de compatibilidade tecnica e ferramentaria homologada, nos termos do Art. 132, inciso I, da Lei Federal 9.279/1996 (LPI). A Fast Moto Rio e uma oficina independente.
+
+## Diferenciais Tecnologicos
+1. Scanner Oficial TEXA Axone: Leitura computadorizada em tempo real de injecao eletronica, parametros de telemetria, modulo ABS, controle de tracao e reset de servico de bordo.
+2. Transparencia com a Lidiane: Acompanhamento da bancada com fotos e videos enviados diretamente pelo WhatsApp, com aprovacao previa formal de qualquer servico.
+3. Ferramental Homologado: Torquimetros calibrados e aperto segundo o torque de manual do fabricante (zero uso indiscriminado de parafusadeira pneumatica).
+4. Estrutura no Anil: Galpao com 4 elevadores dedicados com hora marcada e seguranca patrimonial.
+5. Fluidos Homologados: Linha premium de lubrificantes e fluidos 100% sinteticos Motul e Motorex.
+6. Ecossistema 3 em 1: Mecanica de alta performance, estetica especializada (vitrificacao ceramica com pH neutro) e protecao veicular oficial em parceria com a ELLO Beneficios.
+
+## Catalogo Oficial de Servicos
+1. Mecanica Geral de Alta Performance: motor, cambio, transmissao e embreagem.
+2. Revisao Preventiva por Quilometragem: planos Essencial, Avancada e Performance.
+3. Manutencao Corretiva: diagnostico cirurgico e substituicao com pecas genuinas.
+4. Preparacao e Manutencao de Suspensao Invertida: bengalas e amortecedores.
+5. Diagnostico e Reparo Eletrico Especializado: estatores, chicotes e modulos.
+6. Pintura Tecnica e Recuperacao Estetica: padrao original de fabrica.
+7. Instalacao de Acessorios: escapamentos esportivos, suportes e protecoes.
+8. Lavagem Especializada: detalhamento estetico com produtos de pH neutro.
+9. Montagem e Balanceamento dos Pneus: maquinario pneumatico sem marcas.
+10. Diagnostico Eletronico com Scanner TEXA Axone na bancada.
+11. Protecao Veicular ELLO Beneficios: rastreador dedicado e guincho 24h no RJ.
+
+## Regioes de Atendimento no Rio de Janeiro
+- Jacarepagua e Anil (sede da oficina)
+- Barra da Tijuca e Jardim Oceanico
+- Recreio dos Bandeirantes
+- Freguesia e Taquara
+- Zona Oeste e Linha Amarela
+
+## Rotas Principais
+- [Pagina Inicial](https://fastmotorio-site.vercel.app/): Galpao, catalogo, equipe e agendamento.
+- [Canal de Conversao e WhatsApp](https://fastmotorio-site.vercel.app/obrigado.html): Transicao direta para atendimento com a Lidiane.
+- [Politica de Privacidade](https://fastmotorio-site.vercel.app/politica-de-privacidade.html): Conformidade integral com a LGPD (Lei 13.709/2018).
+- [Termos de Uso](https://fastmotorio-site.vercel.app/termos-de-uso.html): Regras de agendamento de elevador, validade de orcamentos e garantias.

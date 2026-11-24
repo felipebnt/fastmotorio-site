@@ -2530,3 +2530,116 @@ a {
     margin-top: 6px;
   }
 }
+
+/* 17. Efeitos Visuais de Estudio Automotivo (Spotlight & Shimmer) */
+
+/* Spotlight Glow Dinamico nos Cards */
+.service-card,
+.ecosystem-card,
+.plan-card,
+.standard-feature-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::after,
+.ecosystem-card::after,
+.plan-card::after,
+.standard-feature-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(220, 38, 38, 0.16),
+    transparent 68%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.service-card:hover::after,
+.ecosystem-card:hover::after,
+.plan-card:hover::after,
+.standard-feature-card:hover::after {
+  opacity: 1;
+}
+
+.service-card > *,
+.ecosystem-card > *,
+.plan-card > *,
+.standard-feature-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fallback sutil no mobile para cards em foco/touch */
+@media (hover: none) and (pointer: coarse) {
+  .service-card::after,
+  .ecosystem-card::after,
+  .plan-card::after,
+  .standard-feature-card::after {
+    background: radial-gradient(
+      circle at 50% 20%,
+      rgba(220, 38, 38, 0.08),
+      transparent 70%
+    );
+    opacity: 1;
+  }
+}
+
+/* Shimmer Sofisticado em Botoes Primarios (Padrao Linear/Apple) */
+.button-primary,
+.button-giant {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-primary::after,
+.button-giant::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -80%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.26) 50%,
+    transparent 100%
+  );
+  transform: translate3d(0, 0, 0) rotate(25deg);
+  pointer-events: none;
+  animation: studio-shimmer 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+@keyframes studio-shimmer {
+  0%, 70% {
+    transform: translate3d(0, 0, 0) rotate(25deg);
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  90% {
+    transform: translate3d(450%, 0, 0) rotate(25deg);
+    opacity: 1;
+  }
+  91%, 100% {
+    transform: translate3d(450%, 0, 0) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-primary::after,
+  .button-giant::after {
+    display: none;
+    animation: none;
+  }
+}
