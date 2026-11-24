@@ -248,7 +248,8 @@
 
   // 3.1 Video 2: Showcase de Motocicletas de Alta Performance (#equipe)
   (() => {
-    const container = document.querySelector('.team-showcase-wrapper, .standards-vehicle-showcase');
+    const track = document.querySelector('.showcase-scroll-track');
+    const container = track || document.querySelector('.team-showcase-wrapper, .standards-vehicle-showcase');
     const canvas = container && container.querySelector('.showcase-canvas');
     if (!container || !canvas) return;
 
@@ -327,9 +328,10 @@
       let lastTick = 0;
 
       const getProgress = () => {
-        const r = container.getBoundingClientRect();
-        const vh = window.innerHeight;
-        return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.7 + r.height * 0.5)));
+        const el = track || container;
+        const rect = el.getBoundingClientRect();
+        const maxScroll = Math.max(1, rect.height - window.innerHeight);
+        return Math.min(1, Math.max(0, -rect.top / maxScroll));
       };
 
       const scrubShowcase = () => {
@@ -370,7 +372,8 @@
 
   // 3.2 Video 3: Bastidores Tecnicos e Equipe no Galpao (#galpao)
   (() => {
-    const box = document.querySelector('.team-video-box');
+    const track = document.querySelector('.team-video-track');
+    const box = track || document.querySelector('.team-video-box');
     const canvas = box && box.querySelector('.team-video-canvas');
     if (!box || !canvas) return;
 
@@ -449,9 +452,10 @@
       let lastTick = 0;
 
       const getProgress = () => {
-        const r = box.getBoundingClientRect();
-        const vh = window.innerHeight;
-        return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.7 + r.height * 0.5)));
+        const el = track || box;
+        const rect = el.getBoundingClientRect();
+        const maxScroll = Math.max(1, rect.height - window.innerHeight);
+        return Math.min(1, Math.max(0, -rect.top / maxScroll));
       };
 
       const scrubEquipe = () => {

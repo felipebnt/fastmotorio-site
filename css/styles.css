@@ -1623,12 +1623,103 @@ a {
    ESTILOS DOS VÍDEOS INTERATIVOS E CATÁLOGO DE SERVIÇOS
    ======================================================== */
 
+.section-equipe {
+  padding-top: 0;
+}
+
+.section-galpao {
+  padding-bottom: clamp(60px, 8vw, 110px);
+}
+
+/* Pista de Scroll Sticky: Video 2 - Showcase de Motos (#equipe) */
+.showcase-scroll-track {
+  position: relative;
+  height: 280vh;
+  width: 100%;
+}
+
+.showcase-sticky-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.showcase-sticky-inner {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  padding-inline: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.showcase-badge-floating {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(10, 11, 14, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.showcase-badge-floating .badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-racing);
+  box-shadow: 0 0 8px var(--accent-racing);
+}
+
+.showcase-caption-floating {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.showcase-caption-title {
+  font-family: var(--font-heading);
+  font-size: clamp(16px, 2.2vw, 22px);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.showcase-caption-sub {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1.4vw, 13px);
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
 /* Vídeo 2: Showcase de Motos na Seção Equipe (#equipe) */
 .team-showcase-wrapper {
   position: relative;
   width: 100%;
   max-width: 860px;
-  margin: 0 auto 48px auto;
+  margin: 0 auto;
   border: none;
   background: transparent;
   box-shadow: none;
@@ -1701,6 +1792,44 @@ a {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   background: #0A0B0E url("../images/showcase-frames/frame_001.webp") center/cover no-repeat;
+}
+
+/* Pista de Scroll Sticky: Video 3 - Diagnostico TEXA Axone (#galpao) */
+.team-video-track {
+  position: relative;
+  height: 260vh;
+  width: 100%;
+  margin-block: 24px 48px;
+}
+
+.team-video-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.team-video-sticky-inner {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  padding-inline: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-video-sticky-inner .team-video-box {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 /* Video 3: Diagnostico Oficial TEXA Axone no Galpao */
@@ -1914,5 +2043,29 @@ a {
   }
   .team-video-box {
     border-radius: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .showcase-scroll-track {
+    height: 240vh;
+  }
+  .team-video-track {
+    height: 230vh;
+  }
+  .showcase-sticky-inner,
+  .team-video-sticky-inner {
+    padding-inline: 16px;
+  }
+  .showcase-caption-title {
+    font-size: 15px;
+  }
+  .showcase-caption-sub {
+    font-size: 11px;
+  }
+  .showcase-badge-floating {
+    font-size: 10px;
+    padding: 5px 12px;
+    margin-bottom: 12px;
   }
 }
