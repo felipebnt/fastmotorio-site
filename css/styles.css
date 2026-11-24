@@ -1767,7 +1767,7 @@ a {
   height: 100svh;
   width: 100%;
   padding-top: 88px;
-  padding-bottom: 24px;
+  padding-bottom: 76px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -1842,7 +1842,7 @@ a {
 .team-showcase-wrapper {
   position: relative;
   width: 100%;
-  max-width: min(860px, 72vw, calc((100svh - 240px) * 16 / 9));
+  max-width: min(860px, 68vw, calc((100svh - 295px) * 16 / 9));
   margin: 0 auto;
   border: none;
   background: transparent;
