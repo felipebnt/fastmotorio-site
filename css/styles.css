@@ -1678,16 +1678,22 @@ a {
   object-fit: cover;
 }
 
-/* Vídeo 3: Bastidores e Equipe no Galpão */
+/* Video 3: Diagnostico Oficial TEXA Axone no Galpao */
 .team-video-box {
   position: relative;
   grid-column: 1 / -1;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   background: #000;
   aspect-ratio: 16 / 9;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.85);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-video-box:hover {
+  border-color: rgba(220, 38, 38, 0.25);
+  box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.9), 0 0 24px rgba(220, 38, 38, 0.06);
 }
 
 .team-video-box video.team-scroll-video {
@@ -1707,12 +1713,27 @@ a {
   left: 0;
   right: 0;
   padding: 14px 18px;
-  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(10, 11, 14, 0.92) 100%);
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-primary);
   letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   pointer-events: none;
+  z-index: 2;
+}
+
+.team-video-box .team-video-overlay::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
+  flex-shrink: 0;
 }
 
 /* Catálogo Oficial de 11 Serviços */
