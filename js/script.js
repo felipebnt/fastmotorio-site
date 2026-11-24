@@ -98,7 +98,7 @@
     let curTime = -1;
     let lastTick = 0;
     let shownFrame = -1;
-    const FPS = 24;
+    const FPS = 60;
 
     const drawFrame = () => {
       if (!context || heroVideo.readyState < 2 || !heroVideo.videoWidth || !heroVideo.videoHeight) {
@@ -118,17 +118,17 @@
 
     const smoothFrame = (now) => {
       if (heroReady && Number.isFinite(heroVideo.duration) && heroVideo.duration > 0) {
-        const dt = Math.min(64, Math.max(1, now - (lastTick || now)));
+        const dt = Math.min(32, Math.max(1, now - (lastTick || now)));
         lastTick = now;
 
         if (curTime < 0) {
           curTime = desiredTime;
         } else {
-          // Equacao diferencial de suavizacao exponencial (pursuit continuo)
-          curTime += (desiredTime - curTime) * (1 - Math.exp(-dt / 120));
+          // Equacao diferencial de suavizacao exponencial com pursuit continuo a 60 FPS
+          curTime += (desiredTime - curTime) * (1 - Math.exp(-dt / 90));
         }
 
-        if (Math.abs(desiredTime - curTime) < 0.004) {
+        if (Math.abs(desiredTime - curTime) < 0.001) {
           curTime = desiredTime;
         }
 
@@ -197,31 +197,58 @@
       return;
     }
     v.pause();
-    let ready = false, seeking = false, target = 0, raf = 0;
-    const progress = () => {
+    let ready = false, seeking = false, targetTime = 0, curTime = 0, raf = 0;
+
+    const getProgress = () => {
       const r = fig.getBoundingClientRect(), vh = window.innerHeight;
       return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.6 + r.height * 0.4)));
     };
-    const tick = () => {
-      raf = 0;
+
+    const updateTarget = () => {
       if (!ready || !Number.isFinite(v.duration)) return;
-      target = progress() * end();
-      if (!seeking && Math.abs(v.currentTime - target) > 0.03) {
-        seeking = true;
-        v.currentTime = target;
-      }
+      targetTime = getProgress() * end();
     };
-    const request = () => { if (!raf) raf = requestAnimationFrame(tick); };
+
+    const loop = () => {
+      if (ready && Number.isFinite(v.duration) && v.duration > 0) {
+        // Lerp amortecido com fator 0.08 constante para avanco suave e amanteigado
+        const diff = targetTime - curTime;
+        if (Math.abs(diff) > 0.001) {
+          curTime += diff * 0.08;
+          if (!seeking && Math.abs(v.currentTime - curTime) > 0.015) {
+            seeking = true;
+            v.currentTime = Math.min(v.duration - 0.05, Math.max(0, curTime));
+          }
+        }
+      }
+      raf = requestAnimationFrame(loop);
+    };
+
     v.addEventListener('seeked', () => {
       seeking = false;
-      if (Math.abs(v.currentTime - target) > 0.03) request();
     });
-    v.addEventListener('loadedmetadata', () => { ready = true; tick(); });
-    v.addEventListener('loadeddata', () => { ready = true; tick(); });
-    window.addEventListener('scroll', request, { passive: true });
-    window.addEventListener('resize', request, { passive: true });
+
+    v.addEventListener('loadedmetadata', () => {
+      ready = true;
+      updateTarget();
+      curTime = targetTime;
+    });
+    v.addEventListener('loadeddata', () => {
+      ready = true;
+      updateTarget();
+    });
+
+    window.addEventListener('scroll', updateTarget, { passive: true });
+    window.addEventListener('resize', updateTarget, { passive: true });
+
     v.load();
-    if (v.readyState >= 1) { ready = true; tick(); }
+    if (v.readyState >= 1) {
+      ready = true;
+      updateTarget();
+      curTime = targetTime;
+    }
+
+    raf = requestAnimationFrame(loop);
   })();
 
   // 3.2 Vídeo 3: Bastidores Técnicos e Equipe no Galpão (#galpao)

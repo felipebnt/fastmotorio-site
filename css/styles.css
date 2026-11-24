@@ -1640,9 +1640,9 @@ a {
   z-index: 2;
   pointer-events: none;
   background:
-    linear-gradient(to bottom, #0A0B0E 0%, transparent 20%, transparent 80%, #0A0B0E 100%),
-    linear-gradient(to right, #0A0B0E 0%, transparent 15%, transparent 85%, #0A0B0E 100%),
-    radial-gradient(ellipse at center, transparent 35%, rgba(10, 11, 14, 0.75) 70%, #0A0B0E 95%);
+    linear-gradient(to bottom, #0A0B0E 0%, transparent 7%, transparent 93%, #0A0B0E 100%),
+    linear-gradient(to right, #0A0B0E 0%, transparent 5%, transparent 95%, #0A0B0E 100%),
+    radial-gradient(ellipse at center, transparent 75%, rgba(10, 11, 14, 0.5) 88%, #0A0B0E 98%);
 }
 
 .team-showcase-wrapper .showcase-video {
@@ -1655,8 +1655,8 @@ a {
   object-fit: cover;
   border: none;
   background: transparent;
-  -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000000 60%, rgba(0, 0, 0, 0.75) 75%, transparent 100%);
-  mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000000 60%, rgba(0, 0, 0, 0.75) 75%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 95% 92% at 50% 50%, #000000 80%, rgba(0, 0, 0, 0.8) 90%, transparent 100%);
+  mask-image: radial-gradient(ellipse 95% 92% at 50% 50%, #000000 80%, rgba(0, 0, 0, 0.8) 90%, transparent 100%);
 }
 
 .standards-vehicle-showcase {
