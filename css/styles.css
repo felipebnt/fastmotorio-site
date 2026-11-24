@@ -2077,29 +2077,29 @@ a {
 /* 15. Banner LGPD de Consentimento de Cookies */
 .cookie-banner {
   position: fixed;
-  bottom: 24px;
-  left: 24px;
-  right: 24px;
+  bottom: 18px;
+  left: 18px;
+  right: 18px;
   margin-inline: auto;
-  max-width: 920px;
+  max-width: 580px;
   z-index: 990;
-  background: rgba(15, 18, 24, 0.95);
+  background: rgba(15, 18, 24, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  padding: 18px 24px;
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.85), 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 10px 16px;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 14px;
   transform: translateY(120%);
   opacity: 0;
   visibility: hidden;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.4s ease,
-              visibility 0.4s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.35s ease,
+              visibility 0.35s ease;
 }
 
 .cookie-banner.is-visible {
@@ -2109,8 +2109,8 @@ a {
 }
 
 .cookie-banner-text {
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -2129,13 +2129,16 @@ a {
 .cookie-banner-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
 .cookie-accept-btn {
-  padding: 10px 22px;
+  padding: 7px 14px;
   font-size: 11px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 /* 16. Paginas Institucionais (Obrigado, Privacidade, Termos, 404) */
@@ -2437,19 +2440,34 @@ a {
     height: 26px;
   }
   .cookie-banner {
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    padding: 16px 18px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 8px 12px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 8px;
+  }
+  .cookie-banner-text {
+    font-size: 11px;
+    line-height: 1.35;
   }
   .cookie-banner-actions {
     justify-content: flex-end;
+    flex-shrink: 0;
   }
   .cookie-accept-btn {
-    width: 100%;
+    width: auto;
+    padding: 6px 12px;
+    font-size: 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  body.has-cookie-banner .whatsapp-float-btn {
+    bottom: 64px;
   }
   .footer-legal-links {
     margin-top: 6px;

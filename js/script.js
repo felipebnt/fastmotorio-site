@@ -401,10 +401,12 @@
 
     setTimeout(() => {
       banner.classList.add('is-visible');
+      document.body.classList.add('has-cookie-banner');
     }, 800);
 
     acceptBtn.addEventListener('click', () => {
       banner.classList.remove('is-visible');
+      document.body.classList.remove('has-cookie-banner');
       try {
         localStorage.setItem(STORAGE_KEY, 'accepted');
       } catch (e) {}
