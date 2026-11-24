@@ -100,14 +100,94 @@
     }
   };
 
+  // Helper compartilhado: carregamento progressivo com concorrencia controlada
+  const createFrameLoader = ({ total, pathPrefix, onFrameReady, deferRemaining, maxConcurrency = 6 }) => {
+    const loadedImages = new Array(total);
+    const queued = new Set([0]);
+    const queue = [];
+    let active = 0;
+    let remainingStarted = false;
+
+    const loadIndex = (i) => {
+      const img = new Image();
+      loadedImages[i] = img;
+      const num = String(i + 1).padStart(3, '0');
+      const finish = () => {
+        active = Math.max(0, active - 1);
+        if (onFrameReady) onFrameReady(i, img);
+        pumpQueue();
+      };
+      img.onload = finish;
+      img.onerror = finish;
+      img.src = `${pathPrefix}frame_${num}.webp`;
+    };
+
+    const pumpQueue = () => {
+      while (active < maxConcurrency && queue.length > 0) {
+        const idx = queue.shift();
+        active++;
+        loadIndex(idx);
+      }
+    };
+
+    const startRemaining = () => {
+      if (remainingStarted) return;
+      remainingStarted = true;
+      // Prioriza keyframes (passo 4) para scrubbing imediato, depois preenche intermediarios
+      for (let i = 4; i < total; i += 4) {
+        if (!queued.has(i)) {
+          queued.add(i);
+          queue.push(i);
+        }
+      }
+      for (let i = 1; i < total; i++) {
+        if (!queued.has(i)) {
+          queued.add(i);
+          queue.push(i);
+        }
+      }
+      pumpQueue();
+    };
+
+    // Frame 0 entra primeiro com prioridade maxima
+    active++;
+    loadIndex(0);
+    if (!deferRemaining) {
+      setTimeout(startRemaining, 150);
+    }
+
+    return { loadedImages, startRemaining };
+  };
+
+  const findClosestFrame = (loadedImages, frameIndex, total) => {
+    let img = loadedImages[frameIndex];
+    if (img && img.complete && img.naturalWidth) {
+      return { img, exact: true };
+    }
+    for (let offset = 1; offset < total; offset++) {
+      const prev = frameIndex - offset;
+      if (prev >= 0 && loadedImages[prev] && loadedImages[prev].complete && loadedImages[prev].naturalWidth) {
+        return { img: loadedImages[prev], exact: false };
+      }
+      const next = frameIndex + offset;
+      if (next < total && loadedImages[next] && loadedImages[next].complete && loadedImages[next].naturalWidth) {
+        return { img: loadedImages[next], exact: false };
+      }
+    }
+    return { img: null, exact: false };
+  };
+
   if (hero && heroCanvas) {
     const context = heroCanvas.getContext('2d', { alpha: false, desynchronized: true });
     const TOTAL_FRAMES = 120;
-    const loadedImages = new Array(TOTAL_FRAMES);
     let cachedW = 0;
     let cachedH = 0;
     let currentDrawnIndex = -1;
+    let currentExactDrawn = false;
     let currentP = 0;
+    let targetFrame = 0;
+    let currentFrame = 0;
+    let loadedImages = [];
 
     const resizeCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -123,24 +203,8 @@
       if (!context) return;
       if (!cachedW || !cachedH) resizeCanvas();
 
-      let img = loadedImages[frameIndex];
-      // Fallback para o frame mais proximo ja carregado caso o frame exato ainda esteja baixando
-      if (!img || !img.complete || !img.naturalWidth) {
-        for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-          const prev = frameIndex - offset;
-          if (prev >= 0 && loadedImages[prev] && loadedImages[prev].complete && loadedImages[prev].naturalWidth) {
-            img = loadedImages[prev];
-            break;
-          }
-          const next = frameIndex + offset;
-          if (next < TOTAL_FRAMES && loadedImages[next] && loadedImages[next].complete && loadedImages[next].naturalWidth) {
-            img = loadedImages[next];
-            break;
-          }
-        }
-      }
-
-      if (!img || !img.complete || !img.naturalWidth) return;
+      const { img, exact } = findClosestFrame(loadedImages, frameIndex, TOTAL_FRAMES);
+      if (!img) return;
 
       const nw = img.naturalWidth || 1920;
       const nh = img.naturalHeight || 1080;
@@ -163,28 +227,30 @@
 
       context.drawImage(img, dx, dy, dw, dh);
       currentDrawnIndex = frameIndex;
+      currentExactDrawn = exact;
     };
 
-    // Pre-carregamento dos 120 frames WebP
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      const num = String(i + 1).padStart(3, '0');
-      img.src = `images/hero-frames/frame_${num}.webp`;
-      loadedImages[i] = img;
-
-      // Desenhar o frame 1 imediatamente assim que carregar para zero delay
-      if (i === 0) {
-        if (img.complete && img.naturalWidth > 0) {
-          drawFrame(0);
-        } else {
-          img.onload = () => {
-            if (currentDrawnIndex === -1) {
-              drawFrame(0);
-            }
-          };
+    const loader = createFrameLoader({
+      total: TOTAL_FRAMES,
+      pathPrefix: 'images/hero-frames/',
+      deferRemaining: true,
+      onFrameReady: (idx) => {
+        if (idx === 0) {
+          loader.startRemaining();
+          if (currentDrawnIndex === -1) {
+            drawFrame(0);
+          }
+          return;
+        }
+        const activeIdx = Math.min(119, Math.max(0, Math.round(currentFrame)));
+        if (idx === activeIdx && !currentExactDrawn) {
+          drawFrame(activeIdx);
         }
       }
-    }
+    });
+    loadedImages = loader.loadedImages;
+    // Garante inicio do carregamento progressivo mesmo se o frame 0 demorar
+    setTimeout(() => loader.startRemaining(), 350);
 
     if (reduceMotion.matches) {
       // Em prefers-reduced-motion, NUNCA zerar ou colapsar a altura da secao
@@ -196,11 +262,15 @@
         drawFrame(0);
       }, { passive: true });
     } else {
-      let targetFrame = 0;
-      let currentFrame = 0;
       let rafId = 0;
       let lastTick = 0;
       let lastDrawnP = -1;
+
+      const scheduleRender = () => {
+        if (!rafId) {
+          rafId = requestAnimationFrame(smoothFrame);
+        }
+      };
 
       const scrubHero = () => {
         const rect = hero.getBoundingClientRect();
@@ -210,13 +280,15 @@
         updateHeroUI(currentP);
 
         targetFrame = Math.min(119, Math.max(0, Math.floor(currentP * 119)));
+        scheduleRender();
       };
 
       const smoothFrame = (now) => {
+        rafId = 0;
         const dt = Math.min(32, Math.max(1, now - (lastTick || now)));
         lastTick = now;
 
-        // Suavizacao a 60 FPS com acompanhamento continuo
+        // Suavizacao a 60 FPS com pausa automatica quando em repouso
         currentFrame += (targetFrame - currentFrame) * (1 - Math.exp(-dt / 60));
         if (Math.abs(targetFrame - currentFrame) < 0.04) {
           currentFrame = targetFrame;
@@ -228,10 +300,13 @@
           drawFrame(idx);
         }
 
-        rafId = requestAnimationFrame(smoothFrame);
+        if (currentFrame !== targetFrame) {
+          scheduleRender();
+        } else {
+          lastTick = 0;
+        }
       };
 
-      rafId = requestAnimationFrame(smoothFrame);
       window.addEventListener('scroll', scrubHero, { passive: true });
       window.addEventListener('resize', () => {
         resizeCanvas();
@@ -255,12 +330,15 @@
 
     const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
     const TOTAL_FRAMES = 120;
-    const loadedImages = new Array(TOTAL_FRAMES);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     let currentDrawnIndex = -1;
+    let currentExactDrawn = false;
     let cachedW = 0;
     let cachedH = 0;
+    let currentFrame = 0;
+    let targetFrame = 0;
+    let loadedImages = [];
 
     const resizeCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -277,41 +355,72 @@
     };
 
     const drawFrame = (frameIndex) => {
-      const img = loadedImages[frameIndex];
-      if (!img || !img.complete || img.naturalWidth === 0) return;
+      if (!ctx) return;
       if (cachedW === 0 || cachedH === 0) resizeCanvas();
       if (cachedW === 0 || cachedH === 0) return;
 
-      const nw = img.naturalWidth;
-      const nh = img.naturalHeight;
-      const scale = Math.max(cachedW / nw, cachedH / nh);
-      const dw = nw * scale;
-      const dh = nh * scale;
-      const dx = (cachedW - dw) / 2;
-      const dy = (cachedH - dh) / 2;
+      const { img, exact } = findClosestFrame(loadedImages, frameIndex, TOTAL_FRAMES);
+      if (!img) return;
 
-      ctx.drawImage(img, dx, dy, dw, dh);
+      const nw = img.naturalWidth || 1920;
+      const nh = img.naturalHeight || 1080;
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile && (cachedW / cachedH) < (nw / nh)) {
+        // Preenche fundo preto de estudio e aplica zoom 1.18 baseado na largura
+        // preservando BMW, Kawasaki e Triumph centralizadas sem cortes laterais
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, cachedW, cachedH);
+        const scale = (cachedW / nw) * 1.18;
+        const dw = nw * scale;
+        const dh = nh * scale;
+        const dx = (cachedW - dw) / 2;
+        const dy = (cachedH - dh) / 2;
+        ctx.drawImage(img, dx, dy, dw, dh);
+      } else {
+        const scale = Math.max(cachedW / nw, cachedH / nh);
+        const dw = nw * scale;
+        const dh = nh * scale;
+        const dx = (cachedW - dw) / 2;
+        const dy = (cachedH - dh) / 2;
+        ctx.drawImage(img, dx, dy, dw, dh);
+      }
+
       currentDrawnIndex = frameIndex;
+      currentExactDrawn = exact;
     };
 
-    // Pre-carregamento dos 120 frames WebP
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      const num = String(i + 1).padStart(3, '0');
-      img.src = `images/showcase-frames/frame_${num}.webp`;
-      loadedImages[i] = img;
-
-      if (i === 0) {
-        if (img.complete && img.naturalWidth > 0) {
+    const loader = createFrameLoader({
+      total: TOTAL_FRAMES,
+      pathPrefix: 'images/showcase-frames/',
+      deferRemaining: true,
+      onFrameReady: (idx) => {
+        if (idx === 0 && currentDrawnIndex === -1) {
           drawFrame(0);
-        } else {
-          img.onload = () => {
-            if (currentDrawnIndex === -1) {
-              drawFrame(0);
-            }
-          };
+          return;
+        }
+        const activeIdx = Math.min(119, Math.max(0, Math.round(currentFrame)));
+        if (idx === activeIdx && !currentExactDrawn) {
+          drawFrame(activeIdx);
         }
       }
+    });
+    loadedImages = loader.loadedImages;
+
+    // Carrega os 119 frames restantes apenas quando o usuario se aproxima de #equipe
+    if ('IntersectionObserver' in window) {
+      const showcaseObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            loader.startRemaining();
+            showcaseObserver.disconnect();
+          }
+        },
+        { rootMargin: '900px 0px' }
+      );
+      showcaseObserver.observe(container);
+    } else {
+      window.addEventListener('load', () => loader.startRemaining(), { once: true });
     }
 
     if (reduceMotion.matches) {
@@ -322,8 +431,6 @@
         drawFrame(0);
       }, { passive: true });
     } else {
-      let targetFrame = 0;
-      let currentFrame = 0;
       let rafId = 0;
       let lastTick = 0;
 
@@ -334,12 +441,20 @@
         return Math.min(1, Math.max(0, -rect.top / maxScroll));
       };
 
+      const scheduleRender = () => {
+        if (!rafId) {
+          rafId = requestAnimationFrame(smoothFrame);
+        }
+      };
+
       const scrubShowcase = () => {
         const p = getProgress();
         targetFrame = Math.min(119, Math.max(0, Math.floor(p * 119)));
+        scheduleRender();
       };
 
       const smoothFrame = (now) => {
+        rafId = 0;
         const dt = Math.min(32, Math.max(1, now - (lastTick || now)));
         lastTick = now;
 
@@ -353,10 +468,13 @@
           drawFrame(idx);
         }
 
-        rafId = requestAnimationFrame(smoothFrame);
+        if (currentFrame !== targetFrame) {
+          scheduleRender();
+        } else {
+          lastTick = 0;
+        }
       };
 
-      rafId = requestAnimationFrame(smoothFrame);
       window.addEventListener('scroll', scrubShowcase, { passive: true });
       window.addEventListener('resize', () => {
         resizeCanvas();

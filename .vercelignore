@@ -1,0 +1,6 @@
+*.md
+media/
+referencias-felipe/
+images/*.ai
+images/*.eps
+.git/
