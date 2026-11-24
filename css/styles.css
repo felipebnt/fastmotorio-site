@@ -1104,6 +1104,12 @@ a {
   aspect-ratio: 4 / 3;
 }
 
+.photo-card.is-wide,
+.photo-card:nth-child(3) {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+}
+
 .photo-card img {
   width: 100%;
   height: 100%;
@@ -1627,10 +1633,6 @@ a {
   padding-top: 0;
 }
 
-.section-galpao {
-  padding-bottom: clamp(60px, 8vw, 110px);
-}
-
 /* Pista de Scroll Sticky: Video 2 - Showcase de Motos (#equipe) */
 .showcase-scroll-track {
   position: relative;
@@ -1794,103 +1796,6 @@ a {
   background: #0A0B0E url("../images/showcase-frames/frame_001.webp") center/cover no-repeat;
 }
 
-/* Pista de Scroll Sticky: Video 3 - Diagnostico TEXA Axone (#galpao) */
-.team-video-track {
-  position: relative;
-  height: 260vh;
-  width: 100%;
-  margin-block: 24px 48px;
-}
-
-.team-video-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100svh;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-}
-
-.team-video-sticky-inner {
-  position: relative;
-  width: 100%;
-  max-width: 960px;
-  padding-inline: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.team-video-sticky-inner .team-video-box {
-  width: 100%;
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-/* Video 3: Diagnostico Oficial TEXA Axone no Galpao */
-.team-video-box {
-  position: relative;
-  grid-column: 1 / -1;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #000;
-  aspect-ratio: 16 / 9;
-  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.85);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.team-video-box:hover {
-  border-color: rgba(220, 38, 38, 0.25);
-  box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.9), 0 0 24px rgba(220, 38, 38, 0.06);
-}
-
-.team-video-box video.team-scroll-video {
-  display: none;
-}
-
-.team-video-box .team-video-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  background: #0A0B0E url("../images/equipe-frames/frame_001.webp") center/cover no-repeat;
-}
-
-.team-video-box .team-video-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 14px 18px;
-  background: linear-gradient(180deg, transparent 0%, rgba(10, 11, 14, 0.92) 100%);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-primary);
-  letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.team-video-box .team-video-overlay::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-red);
-  box-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
-  flex-shrink: 0;
-}
-
 /* Catálogo Oficial de 11 Serviços */
 .services-grid {
   display: grid;
@@ -2041,20 +1946,13 @@ a {
     margin-top: 24px;
     border-radius: 12px;
   }
-  .team-video-box {
-    border-radius: 12px;
-  }
 }
 
 @media (max-width: 768px) {
   .showcase-scroll-track {
     height: 240vh;
   }
-  .team-video-track {
-    height: 230vh;
-  }
-  .showcase-sticky-inner,
-  .team-video-sticky-inner {
+  .showcase-sticky-inner {
     padding-inline: 16px;
   }
   .showcase-caption-title {
