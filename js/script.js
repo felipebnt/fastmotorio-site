@@ -382,4 +382,54 @@
       }
     });
   });
+
+  // 5. Banner LGPD de Consentimento de Cookies
+  (() => {
+    const banner = document.querySelector('.cookie-banner');
+    const acceptBtn = document.querySelector('.cookie-accept-btn');
+    const STORAGE_KEY = 'fastmoto_cookies_consent';
+
+    if (!banner || !acceptBtn) return;
+
+    try {
+      if (localStorage.getItem(STORAGE_KEY) === 'accepted') {
+        return;
+      }
+    } catch (e) {
+      // Ignora erro de storage restrito
+    }
+
+    setTimeout(() => {
+      banner.classList.add('is-visible');
+    }, 800);
+
+    acceptBtn.addEventListener('click', () => {
+      banner.classList.remove('is-visible');
+      try {
+        localStorage.setItem(STORAGE_KEY, 'accepted');
+      } catch (e) {}
+      setTimeout(() => {
+        if (banner.parentNode) {
+          banner.parentNode.removeChild(banner);
+        }
+      }, 450);
+    });
+  })();
+
+  // 6. Botao Flutuante Exclusivo de WhatsApp (Controle de Scroll)
+  (() => {
+    const floatBtn = document.querySelector('.whatsapp-float-btn');
+    const heroTrack = document.querySelector('.hero-scroll-track') || document.querySelector('#inicio');
+    if (!floatBtn || !heroTrack) return;
+
+    const checkHeroVisibility = () => {
+      const rect = heroTrack.getBoundingClientRect();
+      const passedHero = rect.bottom < window.innerHeight * 0.4 || window.scrollY > 480;
+      floatBtn.classList.toggle('is-visible', passedHero);
+    };
+
+    window.addEventListener('scroll', checkHeroVisibility, { passive: true });
+    window.addEventListener('resize', checkHeroVisibility, { passive: true });
+    checkHeroVisibility();
+  })();
 })();
