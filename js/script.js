@@ -107,6 +107,7 @@
     let cachedW = 0;
     let cachedH = 0;
     let currentDrawnIndex = -1;
+    let currentP = 0;
 
     const resizeCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -143,16 +144,21 @@
 
       const nw = img.naturalWidth || 1920;
       const nh = img.naturalHeight || 1080;
-      const scale = Math.max(cachedW / nw, cachedH / nh);
+
+      // Escala e enquadramento dinamico:
+      // No desktop (>= 1024px), aplica multiplicador de 1.38 para cobrir o canvas excedente
+      // e posiciona a moto a 68% da largura, convergindo suavemente para o centro no scroll.
+      // No mobile (< 1024px), a moto permanece 100% centralizada.
+      const isDesktop = window.innerWidth >= 1024;
+      const scaleMultiplier = isDesktop ? 1.38 : 1.0;
+      const scale = Math.max(cachedW / nw, cachedH / nh) * scaleMultiplier;
       const dw = nw * scale;
       const dh = nh * scale;
 
-      // Enquadramento Desktop vs Mobile:
-      // No desktop (>= 1024px), desloca a moto 20% para a direita (X=70%),
-      // liberando a metade esquerda para leitura da headline e CTAs.
-      // No mobile (< 1024px), a moto permanece 100% centralizada.
-      const isDesktop = window.innerWidth >= 1024;
-      const dx = ((cachedW - dw) / 2) + (isDesktop ? (cachedW * 0.20) : 0);
+      const targetCenterX = isDesktop ? (cachedW * (0.68 - currentP * 0.14)) : (cachedW * 0.50);
+      let dx = targetCenterX - (dw / 2);
+      // Clamp estrito para NUNCA vazar fundo preto nem na esquerda (dx <= 0) nem na direita (dx + dw >= cachedW):
+      dx = Math.min(0, Math.max(cachedW - dw, dx));
       const dy = (cachedH - dh) / 2;
 
       context.drawImage(img, dx, dy, dw, dh);
@@ -194,15 +200,16 @@
       let currentFrame = 0;
       let rafId = 0;
       let lastTick = 0;
+      let lastDrawnP = -1;
 
       const scrubHero = () => {
         const rect = hero.getBoundingClientRect();
         const maxScroll = Math.max(1, rect.height - window.innerHeight);
-        const p = Math.min(1, Math.max(0, -rect.top / maxScroll));
+        currentP = Math.min(1, Math.max(0, -rect.top / maxScroll));
 
-        updateHeroUI(p);
+        updateHeroUI(currentP);
 
-        targetFrame = Math.min(119, Math.max(0, Math.floor(p * 119)));
+        targetFrame = Math.min(119, Math.max(0, Math.floor(currentP * 119)));
       };
 
       const smoothFrame = (now) => {
@@ -216,7 +223,8 @@
         }
 
         const idx = Math.min(119, Math.max(0, Math.round(currentFrame)));
-        if (idx !== currentDrawnIndex) {
+        if (idx !== currentDrawnIndex || Math.abs(currentP - lastDrawnP) > 0.005) {
+          lastDrawnP = currentP;
           drawFrame(idx);
         }
 
