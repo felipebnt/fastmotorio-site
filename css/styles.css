@@ -1667,6 +1667,7 @@ a {
     radial-gradient(ellipse at center, transparent 75%, rgba(10, 11, 14, 0.5) 88%, #0A0B0E 98%);
 }
 
+.team-showcase-wrapper .showcase-canvas,
 .team-showcase-wrapper .showcase-video {
   position: relative;
   z-index: 1;
@@ -1676,7 +1677,7 @@ a {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border: none;
-  background: transparent;
+  background: #0A0B0E url("../images/showcase-frames/frame_001.webp") center/cover no-repeat;
   -webkit-mask-image: radial-gradient(ellipse 95% 92% at 50% 50%, #000000 80%, rgba(0, 0, 0, 0.8) 90%, transparent 100%);
   mask-image: radial-gradient(ellipse 95% 92% at 50% 50%, #000000 80%, rgba(0, 0, 0, 0.8) 90%, transparent 100%);
 }
@@ -1692,12 +1693,14 @@ a {
   position: relative;
 }
 
+.standards-vehicle-showcase .showcase-canvas,
 .standards-vehicle-showcase .showcase-video {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  background: #0A0B0E url("../images/showcase-frames/frame_001.webp") center/cover no-repeat;
 }
 
 /* Video 3: Diagnostico Oficial TEXA Axone no Galpao */
@@ -1727,6 +1730,7 @@ a {
   height: 100%;
   display: block;
   object-fit: cover;
+  background: #0A0B0E url("../images/equipe-frames/frame_001.webp") center/cover no-repeat;
 }
 
 .team-video-box .team-video-overlay {

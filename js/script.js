@@ -246,136 +246,247 @@
     }
   }
 
-  // 3.1 Vídeo 2: Showcase de Motocicletas de Alta Performance (#equipe)
+  // 3.1 Video 2: Showcase de Motocicletas de Alta Performance (#equipe)
   (() => {
-    const fig = document.querySelector('.team-showcase-wrapper, .standards-vehicle-showcase');
-    const v = fig && fig.querySelector('video.showcase-video');
-    if (!v) return;
-    const end = () => Math.max(0, (v.duration || 0) - 0.05);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      v.addEventListener('loadedmetadata', () => { v.currentTime = end(); });
-      return;
-    }
-    v.pause();
-    let ready = false, seeking = false, targetTime = 0, curTime = 0, raf = 0;
+    const container = document.querySelector('.team-showcase-wrapper, .standards-vehicle-showcase');
+    const canvas = container && container.querySelector('.showcase-canvas');
+    if (!container || !canvas) return;
 
-    const getProgress = () => {
-      const r = fig.getBoundingClientRect(), vh = window.innerHeight;
-      return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.6 + r.height * 0.4)));
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    const TOTAL_FRAMES = 120;
+    const loadedImages = new Array(TOTAL_FRAMES);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let currentDrawnIndex = -1;
+    let cachedW = 0;
+    let cachedH = 0;
+
+    const resizeCanvas = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.round(rect.width * dpr);
+      const h = Math.round(rect.height * dpr);
+      if (w > 0 && h > 0 && (cachedW !== w || cachedH !== h)) {
+        canvas.width = w;
+        canvas.height = h;
+        cachedW = w;
+        cachedH = h;
+        currentDrawnIndex = -1;
+      }
     };
 
-    const updateTarget = () => {
-      if (!ready || !Number.isFinite(v.duration)) return;
-      targetTime = getProgress() * end();
+    const drawFrame = (frameIndex) => {
+      const img = loadedImages[frameIndex];
+      if (!img || !img.complete || img.naturalWidth === 0) return;
+      if (cachedW === 0 || cachedH === 0) resizeCanvas();
+      if (cachedW === 0 || cachedH === 0) return;
+
+      const nw = img.naturalWidth;
+      const nh = img.naturalHeight;
+      const scale = Math.max(cachedW / nw, cachedH / nh);
+      const dw = nw * scale;
+      const dh = nh * scale;
+      const dx = (cachedW - dw) / 2;
+      const dy = (cachedH - dh) / 2;
+
+      ctx.drawImage(img, dx, dy, dw, dh);
+      currentDrawnIndex = frameIndex;
     };
 
-    const loop = () => {
-      if (ready && Number.isFinite(v.duration) && v.duration > 0) {
-        // Lerp amortecido com fator 0.08 constante para avanco suave e amanteigado
-        const diff = targetTime - curTime;
-        if (Math.abs(diff) > 0.001) {
-          curTime += diff * 0.08;
-          if (!seeking && Math.abs(v.currentTime - curTime) > 0.015) {
-            seeking = true;
-            v.currentTime = Math.min(v.duration - 0.05, Math.max(0, curTime));
-          }
+    // Pre-carregamento dos 120 frames WebP
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const img = new Image();
+      const num = String(i + 1).padStart(3, '0');
+      img.src = `images/showcase-frames/frame_${num}.webp`;
+      loadedImages[i] = img;
+
+      if (i === 0) {
+        if (img.complete && img.naturalWidth > 0) {
+          drawFrame(0);
+        } else {
+          img.onload = () => {
+            if (currentDrawnIndex === -1) {
+              drawFrame(0);
+            }
+          };
         }
       }
-      raf = requestAnimationFrame(loop);
-    };
-
-    v.addEventListener('seeked', () => {
-      seeking = false;
-    });
-
-    v.addEventListener('loadedmetadata', () => {
-      ready = true;
-      updateTarget();
-      curTime = targetTime;
-    });
-    v.addEventListener('loadeddata', () => {
-      ready = true;
-      updateTarget();
-    });
-
-    window.addEventListener('scroll', updateTarget, { passive: true });
-    window.addEventListener('resize', updateTarget, { passive: true });
-
-    v.load();
-    if (v.readyState >= 1) {
-      ready = true;
-      updateTarget();
-      curTime = targetTime;
     }
 
-    raf = requestAnimationFrame(loop);
+    if (reduceMotion.matches) {
+      resizeCanvas();
+      drawFrame(0);
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        drawFrame(0);
+      }, { passive: true });
+    } else {
+      let targetFrame = 0;
+      let currentFrame = 0;
+      let rafId = 0;
+      let lastTick = 0;
+
+      const getProgress = () => {
+        const r = container.getBoundingClientRect();
+        const vh = window.innerHeight;
+        return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.7 + r.height * 0.5)));
+      };
+
+      const scrubShowcase = () => {
+        const p = getProgress();
+        targetFrame = Math.min(119, Math.max(0, Math.floor(p * 119)));
+      };
+
+      const smoothFrame = (now) => {
+        const dt = Math.min(32, Math.max(1, now - (lastTick || now)));
+        lastTick = now;
+
+        currentFrame += (targetFrame - currentFrame) * (1 - Math.exp(-dt / 60));
+        if (Math.abs(targetFrame - currentFrame) < 0.04) {
+          currentFrame = targetFrame;
+        }
+
+        const idx = Math.min(119, Math.max(0, Math.round(currentFrame)));
+        if (idx !== currentDrawnIndex) {
+          drawFrame(idx);
+        }
+
+        rafId = requestAnimationFrame(smoothFrame);
+      };
+
+      rafId = requestAnimationFrame(smoothFrame);
+      window.addEventListener('scroll', scrubShowcase, { passive: true });
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        scrubShowcase();
+        drawFrame(Math.min(119, Math.max(0, Math.round(currentFrame))));
+      }, { passive: true });
+
+      scrubShowcase();
+      resizeCanvas();
+      drawFrame(0);
+    }
   })();
 
-  // 3.2 Vídeo 3: Bastidores Técnicos e Equipe no Galpão (#galpao)
+  // 3.2 Video 3: Bastidores Tecnicos e Equipe no Galpao (#galpao)
   (() => {
     const box = document.querySelector('.team-video-box');
-    const v = box && box.querySelector('.team-scroll-video');
-    const c = box && box.querySelector('.team-video-canvas');
-    if (!box || !v || !c) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ctx = c.getContext('2d', { alpha: false, desynchronized: true });
-    let ready = false, seeking = false, target = 0, raf = 0;
-    const end = () => Math.max(0, (v.duration || 0) - 0.05);
+    const canvas = box && box.querySelector('.team-video-canvas');
+    if (!box || !canvas) return;
 
-    const drawTeamFrame = () => {
-      if (v.readyState < 2 || !v.videoWidth || !v.videoHeight) return;
-      const dpr = window.devicePixelRatio || 1;
-      const w = c.width = c.clientWidth * dpr;
-      const h = c.height = c.clientHeight * dpr;
-      const scale = Math.max(w / v.videoWidth, h / v.videoHeight);
-      const dw = v.videoWidth * scale;
-      const dh = v.videoHeight * scale;
-      const dx = (w - dw) / 2;
-      const dy = (h - dh) / 2;
-      ctx.drawImage(v, dx, dy, dw, dh);
-    };
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    const TOTAL_FRAMES = 120;
+    const loadedImages = new Array(TOTAL_FRAMES);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    const progress = () => {
-      const r = box.getBoundingClientRect(), vh = window.innerHeight;
-      return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.6 + r.height * 0.4)));
-    };
+    let currentDrawnIndex = -1;
+    let cachedW = 0;
+    let cachedH = 0;
 
-    const tick = () => {
-      raf = 0;
-      if (!ready || !Number.isFinite(v.duration)) return;
-      target = progress() * end();
-      if (!seeking && Math.abs(v.currentTime - target) > 0.03) {
-        seeking = true;
-        v.currentTime = target;
+    const resizeCanvas = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.round(rect.width * dpr);
+      const h = Math.round(rect.height * dpr);
+      if (w > 0 && h > 0 && (cachedW !== w || cachedH !== h)) {
+        canvas.width = w;
+        canvas.height = h;
+        cachedW = w;
+        cachedH = h;
+        currentDrawnIndex = -1;
       }
     };
 
-    const request = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    const drawFrame = (frameIndex) => {
+      const img = loadedImages[frameIndex];
+      if (!img || !img.complete || img.naturalWidth === 0) return;
+      if (cachedW === 0 || cachedH === 0) resizeCanvas();
+      if (cachedW === 0 || cachedH === 0) return;
 
-    v.addEventListener('seeked', () => {
-      seeking = false;
-      drawTeamFrame();
-      if (Math.abs(v.currentTime - target) > 0.03) request();
-    });
+      const nw = img.naturalWidth;
+      const nh = img.naturalHeight;
+      const scale = Math.max(cachedW / nw, cachedH / nh);
+      const dw = nw * scale;
+      const dh = nh * scale;
+      const dx = (cachedW - dw) / 2;
+      const dy = (cachedH - dh) / 2;
 
-    v.addEventListener('loadedmetadata', () => { ready = true; tick(); });
-    v.addEventListener('loadeddata', () => {
-      ready = true;
-      drawTeamFrame();
-      tick();
-    });
+      ctx.drawImage(img, dx, dy, dw, dh);
+      currentDrawnIndex = frameIndex;
+    };
 
-    window.addEventListener('scroll', request, { passive: true });
-    window.addEventListener('resize', () => {
-      drawTeamFrame();
-      request();
-    }, { passive: true });
+    // Pre-carregamento dos 120 frames WebP
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const img = new Image();
+      const num = String(i + 1).padStart(3, '0');
+      img.src = `images/equipe-frames/frame_${num}.webp`;
+      loadedImages[i] = img;
 
-    v.load();
-    if (v.readyState >= 2) {
-      ready = true;
-      drawTeamFrame();
-      tick();
+      if (i === 0) {
+        if (img.complete && img.naturalWidth > 0) {
+          drawFrame(0);
+        } else {
+          img.onload = () => {
+            if (currentDrawnIndex === -1) {
+              drawFrame(0);
+            }
+          };
+        }
+      }
+    }
+
+    if (reduceMotion.matches) {
+      resizeCanvas();
+      drawFrame(0);
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        drawFrame(0);
+      }, { passive: true });
+    } else {
+      let targetFrame = 0;
+      let currentFrame = 0;
+      let rafId = 0;
+      let lastTick = 0;
+
+      const getProgress = () => {
+        const r = box.getBoundingClientRect();
+        const vh = window.innerHeight;
+        return Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.7 + r.height * 0.5)));
+      };
+
+      const scrubEquipe = () => {
+        const p = getProgress();
+        targetFrame = Math.min(119, Math.max(0, Math.floor(p * 119)));
+      };
+
+      const smoothFrame = (now) => {
+        const dt = Math.min(32, Math.max(1, now - (lastTick || now)));
+        lastTick = now;
+
+        currentFrame += (targetFrame - currentFrame) * (1 - Math.exp(-dt / 60));
+        if (Math.abs(targetFrame - currentFrame) < 0.04) {
+          currentFrame = targetFrame;
+        }
+
+        const idx = Math.min(119, Math.max(0, Math.round(currentFrame)));
+        if (idx !== currentDrawnIndex) {
+          drawFrame(idx);
+        }
+
+        rafId = requestAnimationFrame(smoothFrame);
+      };
+
+      rafId = requestAnimationFrame(smoothFrame);
+      window.addEventListener('scroll', scrubEquipe, { passive: true });
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        scrubEquipe();
+        drawFrame(Math.min(119, Math.max(0, Math.round(currentFrame))));
+      }, { passive: true });
+
+      scrubEquipe();
+      resizeCanvas();
+      drawFrame(0);
     }
   })();
 
