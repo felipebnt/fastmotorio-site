@@ -63,9 +63,8 @@
     reveals.forEach((el) => el.classList.add('is-visible'));
   }
 
-  // 3. Engine de Scroll Cinema no Canvas da Hero (#inicio)
+  // 3. Engine de Scroll Cinema com Sequencia de Imagens WebP (Hero)
   const hero = document.querySelector('#inicio');
-  const heroVideo = document.querySelector('.hero-media');
   const heroCanvas = document.querySelector('.hero-canvas');
   const heroContent = document.querySelector('.hero-content');
   const heroScrim = document.querySelector('.hero-scrim');
@@ -101,40 +100,13 @@
     }
   };
 
-  if (reduceMotion.matches) {
-    // Em prefers-reduced-motion, NUNCA zerar ou colapsar a altura da secao
-    updateHeroUI(0);
-    if (heroVideo && heroCanvas) {
-      const context = heroCanvas.getContext('2d', { alpha: false });
-      const drawStatic = () => {
-        if (!context || heroVideo.readyState < 2 || !heroVideo.videoWidth || !heroVideo.videoHeight) return;
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = (heroCanvas.width = heroCanvas.clientWidth * dpr);
-        const h = (heroCanvas.height = heroCanvas.clientHeight * dpr);
-        const scale = Math.max(w / heroVideo.videoWidth, h / heroVideo.videoHeight);
-        const dw = heroVideo.videoWidth * scale;
-        const dh = heroVideo.videoHeight * scale;
-        context.drawImage(heroVideo, (w - dw) / 2, (h - dh) / 2, dw, dh);
-      };
-      heroVideo.addEventListener('loadeddata', drawStatic);
-      heroVideo.load();
-      if (heroVideo.readyState >= 2) drawStatic();
-    }
-  } else if (hero && heroVideo && heroCanvas) {
-    heroVideo.preload = 'auto';
-    heroVideo.pause();
-
+  if (hero && heroCanvas) {
     const context = heroCanvas.getContext('2d', { alpha: false, desynchronized: true });
+    const TOTAL_FRAMES = 120;
+    const loadedImages = new Array(TOTAL_FRAMES);
     let cachedW = 0;
     let cachedH = 0;
-    let heroReady = false;
-    let desiredTime = 0;
-    let seeking = false;
-    let rafId = 0;
-    let curTime = -1;
-    let lastTick = 0;
-    let shownFrame = -1;
-    const FPS = 60;
+    let currentDrawnIndex = -1;
 
     const resizeCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -146,107 +118,124 @@
       }
     };
 
-    const drawFrame = () => {
-      if (!context || heroVideo.readyState < 2 || !heroVideo.videoWidth || !heroVideo.videoHeight) {
-        return;
-      }
+    const drawFrame = (frameIndex) => {
+      if (!context) return;
       if (!cachedW || !cachedH) resizeCanvas();
-      const scale = Math.max(cachedW / heroVideo.videoWidth, cachedH / heroVideo.videoHeight);
-      const dw = heroVideo.videoWidth * scale;
-      const dh = heroVideo.videoHeight * scale;
-      const dx = (cachedW - dw) / 2;
-      const dy = (cachedH - dh) / 2;
 
-      context.drawImage(heroVideo, dx, dy, dw, dh);
-    };
-
-    const getDuration = () => {
-      const d = heroVideo.duration;
-      return Number.isFinite(d) && d > 0 ? d : 0;
-    };
-
-    const checkReady = () => {
-      if (!heroReady && heroVideo.readyState >= 1 && getDuration() > 0) {
-        heroReady = true;
-        scrubHero();
-        if (heroVideo.readyState >= 2) {
-          drawFrame();
+      let img = loadedImages[frameIndex];
+      // Fallback para o frame mais proximo ja carregado caso o frame exato ainda esteja baixando
+      if (!img || !img.complete || !img.naturalWidth) {
+        for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+          const prev = frameIndex - offset;
+          if (prev >= 0 && loadedImages[prev] && loadedImages[prev].complete && loadedImages[prev].naturalWidth) {
+            img = loadedImages[prev];
+            break;
+          }
+          const next = frameIndex + offset;
+          if (next < TOTAL_FRAMES && loadedImages[next] && loadedImages[next].complete && loadedImages[next].naturalWidth) {
+            img = loadedImages[next];
+            break;
+          }
         }
       }
+
+      if (!img || !img.complete || !img.naturalWidth) return;
+
+      const nw = img.naturalWidth || 1920;
+      const nh = img.naturalHeight || 1080;
+      const scale = Math.max(cachedW / nw, cachedH / nh);
+      const dw = nw * scale;
+      const dh = nh * scale;
+
+      // Enquadramento Desktop vs Mobile:
+      // No desktop (>= 1024px), desloca a moto 20% para a direita (X=70%),
+      // liberando a metade esquerda para leitura da headline e CTAs.
+      // No mobile (< 1024px), a moto permanece 100% centralizada.
+      const isDesktop = window.innerWidth >= 1024;
+      const dx = ((cachedW - dw) / 2) + (isDesktop ? (cachedW * 0.20) : 0);
+      const dy = (cachedH - dh) / 2;
+
+      context.drawImage(img, dx, dy, dw, dh);
+      currentDrawnIndex = frameIndex;
     };
 
-    const scrubHero = () => {
-      const rect = hero.getBoundingClientRect();
-      const maxScroll = rect.height - window.innerHeight;
-      const p = Math.min(1, Math.max(0, -rect.top / maxScroll));
+    // Pre-carregamento dos 120 frames WebP
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const img = new Image();
+      const num = String(i + 1).padStart(3, '0');
+      img.src = `images/hero-frames/frame_${num}.webp`;
+      loadedImages[i] = img;
 
-      updateHeroUI(p);
+      // Desenhar o frame 1 imediatamente assim que carregar para zero delay
+      if (i === 0) {
+        if (img.complete && img.naturalWidth > 0) {
+          drawFrame(0);
+        } else {
+          img.onload = () => {
+            if (currentDrawnIndex === -1) {
+              drawFrame(0);
+            }
+          };
+        }
+      }
+    }
 
-      const dur = getDuration();
-      if (!heroReady || dur <= 0) return;
-      desiredTime = Math.min(dur - 0.05, p * dur);
-    };
+    if (reduceMotion.matches) {
+      // Em prefers-reduced-motion, NUNCA zerar ou colapsar a altura da secao
+      updateHeroUI(0);
+      resizeCanvas();
+      drawFrame(0);
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        drawFrame(0);
+      }, { passive: true });
+    } else {
+      let targetFrame = 0;
+      let currentFrame = 0;
+      let rafId = 0;
+      let lastTick = 0;
 
-    const smoothFrame = (now) => {
-      const dur = getDuration();
-      if (heroReady && dur > 0) {
+      const scrubHero = () => {
+        const rect = hero.getBoundingClientRect();
+        const maxScroll = Math.max(1, rect.height - window.innerHeight);
+        const p = Math.min(1, Math.max(0, -rect.top / maxScroll));
+
+        updateHeroUI(p);
+
+        targetFrame = Math.min(119, Math.max(0, Math.floor(p * 119)));
+      };
+
+      const smoothFrame = (now) => {
         const dt = Math.min(32, Math.max(1, now - (lastTick || now)));
         lastTick = now;
 
-        if (curTime < 0) {
-          curTime = desiredTime;
-        } else {
-          // Equacao diferencial de suavizacao exponencial com pursuit continuo a 60 FPS
-          curTime += (desiredTime - curTime) * (1 - Math.exp(-dt / 90));
+        // Suavizacao a 60 FPS com acompanhamento continuo
+        currentFrame += (targetFrame - currentFrame) * (1 - Math.exp(-dt / 60));
+        if (Math.abs(targetFrame - currentFrame) < 0.04) {
+          currentFrame = targetFrame;
         }
 
-        if (Math.abs(desiredTime - curTime) < 0.001) {
-          curTime = desiredTime;
+        const idx = Math.min(119, Math.max(0, Math.round(currentFrame)));
+        if (idx !== currentDrawnIndex) {
+          drawFrame(idx);
         }
 
-        const targetFrame = Math.round(curTime * FPS);
-        if (targetFrame !== shownFrame && !seeking) {
-          shownFrame = targetFrame;
-          seeking = true;
-          heroVideo.currentTime = Math.min(dur - 0.05, targetFrame / FPS);
-        }
-      }
+        rafId = requestAnimationFrame(smoothFrame);
+      };
+
       rafId = requestAnimationFrame(smoothFrame);
-    };
+      window.addEventListener('scroll', scrubHero, { passive: true });
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        scrubHero();
+        drawFrame(Math.min(119, Math.max(0, Math.round(currentFrame))));
+      }, { passive: true });
 
-    heroVideo.addEventListener('loadedmetadata', checkReady);
-    heroVideo.addEventListener('loadeddata', () => {
-      checkReady();
-      drawFrame();
+      // Chamada inicial
       scrubHero();
-    });
-    heroVideo.addEventListener('canplay', checkReady);
-    heroVideo.addEventListener('canplaythrough', checkReady);
-
-    heroVideo.addEventListener('seeked', () => {
-      seeking = false;
-      drawFrame();
-    });
-
-    heroVideo.addEventListener('play', () => heroVideo.pause());
-
-    // Leitura imediata de readyState >= 1 no bind sem esperar eventos futuros
-    checkReady();
-    heroVideo.load();
-    checkReady();
-    if (heroVideo.readyState >= 2) {
-      drawFrame();
-    }
-
-    rafId = requestAnimationFrame(smoothFrame);
-    window.addEventListener('scroll', scrubHero, { passive: true });
-    window.addEventListener('resize', () => {
       resizeCanvas();
-      scrubHero();
-      drawFrame();
-    }, { passive: true });
-
-    scrubHero();
+      drawFrame(0);
+    }
   }
 
   // 3.1 Vídeo 2: Showcase de Motocicletas de Alta Performance (#equipe)
