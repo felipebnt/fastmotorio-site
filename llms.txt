@@ -1,11 +1,11 @@
 # Fast Moto Rio
 
-> Centro de excelência técnica e mecânica especializada em motocicletas de média e alta cilindrada no Rio de Janeiro (Anil, Jacarepaguá, Barra da Tijuca e Zona Oeste). Diagnóstico computadorizado oficial TEXA Axone, revisões preventivas por torque de manual e acompanhamento da bancada em tempo real com a Lidiane.
+> Centro de excelência técnica multimarcas para motocicletas no Rio de Janeiro (Anil, Jacarepaguá, Barra da Tijuca e Zona Oeste). Diagnóstico computadorizado oficial TEXA Axone, torque calibrado, lubrificantes Gulf, Repsol e Motul, estética especializada, atendimento via seguro e fotos e vídeos da bancada no WhatsApp com a Lidiane.
 
 URL Canônica: https://fastmotorio-site.vercel.app/
 
 ## Identificação e NAP (Name, Address, Phone)
-- Nome Oficial: Fast Moto Rio: Oficina Especializada em Média e Alta Cilindrada
+- Nome Oficial: Fast Moto Rio - Oficina Especializada Multimarcas
 - Endereço: Rua Encontro Marcado, 174, Anil, Jacarepaguá, Rio de Janeiro, RJ, CEP 22765-270
 - Coordenadas Oficiais (Google Maps): -22.9641023, -43.3375909
 - Avaliação no Google: 4.9 estrelas (54 avaliações comprovadas)
@@ -13,38 +13,33 @@ URL Canônica: https://fastmotorio-site.vercel.app/
 - Horário de Funcionamento: Segunda a Sexta: 08:00 às 18:00 | Sábado: 08:00 às 13:00
 - Acesso Rápido: Próximo à Linha Amarela, Estrada de Jacarepaguá e Barra da Tijuca
 
-## Posicionamento e Especialidade
-Oficina mecânica multimarca independente com padrão de concessionária premium e transparência de box de corrida. Atendimento especializado e ferramentaria homologada para motocicletas de 500cc a 1300cc:
-- BMW Motorrad (R 1250 GS, R 1300 GS, S 1000 RR, S 1000 XR, F 850 GS, F 900 R/XR)
-- Triumph Motorcycles (Tiger 900, Tiger 1200, Street Triple 765, Speed Triple, Bonneville)
-- Ducati (Panigale V2/V4, Multistrada 950/1260/V4, Monster, Scrambler, Diavel)
-- Kawasaki (Ninja ZX-6R, Ninja ZX-10R, Z900, Z1000, Versys 650/1000)
-- Honda (Africa Twin 1100, CBR 650R, CBR 1000RR-R, Transalp)
-- Yamaha (MT-07, MT-09, R3, R6, R1, Ténéré 700)
-- Suzuki (GSX-R 750/1000, V-Strom 650/1050, Hayabusa)
+## Posicionamento e Especialidade Multimarcas
+Oficina mecânica independente multimarcas com padrão de fábrica e transparência total. Atendimento especializado para motos nacionais e importadas:
+- Yamaha, Honda, Suzuki, Kawasaki, BMW Motorrad, Ducati, Triumph, Harley-Davidson, Royal Enfield, KTM, Bajaj, Haojue, Dafra e Shineray.
 
 A menção a montadoras destina-se exclusivamente à indicação de compatibilidade técnica e ferramentaria homologada, nos termos do Art. 132, inciso I, da Lei Federal 9.279/1996 (LPI). A Fast Moto Rio é uma oficina independente.
 
 ## Diferenciais Tecnológicos
-1. Scanner Oficial TEXA Axone: Leitura computadorizada em tempo real de injeção eletrônica, parâmetros de telemetria, módulo ABS, controle de tração e reset de serviço de bordo.
-2. Transparência com a Lidiane: Acompanhamento da bancada com fotos e vídeos enviados diretamente pelo WhatsApp, com aprovação prévia formal de qualquer serviço.
-3. Ferramental Homologado: Torquímetros Beta calibrados e aperto segundo o torque de manual do fabricante (zero uso indiscriminado de parafusadeira pneumática).
-4. Estrutura no Anil: Galpão com 4 elevadores dedicados com hora marcada e segurança patrimonial.
-5. Fluidos Homologados: Linha premium de lubrificantes e fluidos 100% sintéticos Motul e Motorex.
-6. Ecossistema 3 em 1: Mecânica de alta performance, estética especializada (vitrificação cerâmica com pH neutro) e proteção veicular oficial em parceria com a ELLO Benefícios.
+1. Scanner Oficial TEXA Axone: Leitura computadorizada de injeção eletrônica, parâmetros de telemetria, módulo ABS, controle de tração e reset de serviço de bordo.
+2. Fotos e Vídeos da Bancada: Acompanhamento enviado diretamente pelo WhatsApp com a Lidiane, com aprovação prévia formal de qualquer serviço.
+3. Torque Calibrado e Padrão de Fábrica: Torquímetros calibrados seguindo exatamente o manual do fabricante.
+4. Estrutura no Anil: Espaço amplo com atendimento agendado, bancadas técnicas dedicadas e segurança patrimonial.
+5. Lubrificantes Homologados: Linha de óleos e fluidos Gulf, Repsol e Motul.
+6. Ecossistema Completo: Mecânica multimarcas, estética para motos (detalhamento e vitrificação cerâmica), atendimento via seguro/seguradoras e proteção veicular oficial em parceria com a ELLO Benefícios.
 
 ## Catálogo Oficial de Serviços
-1. Mecânica Geral de Alta Performance: motor, câmbio, transmissão e embreagem.
-2. Revisão Preventiva por Quilometragem: diagnóstico computadorizado e revisão técnica sob medida.
-3. Manutenção Corretiva: diagnóstico cirúrgico e substituição com peças genuínas.
+1. Mecânica Geral: motor, câmbio, transmissão e embreagem.
+2. Revisão Preventiva por Quilometragem: diagnóstico computadorizado e lubrificantes Gulf, Repsol e Motul.
+3. Manutenção Corretiva: diagnóstico cirúrgico e reparo técnico no padrão de fábrica.
 4. Preparação e Manutenção de Suspensão Invertida: bengalas e amortecedores.
 5. Diagnóstico e Reparo Elétrico Especializado: estatores, chicotes e módulos.
 6. Pintura Técnica e Recuperação Estética: padrão original de fábrica.
 7. Instalação de Acessórios: escapamentos esportivos, suportes e proteções.
-8. Lavagem Especializada: detalhamento estético com produtos de pH neutro.
+8. Estética para Motos: lavagem técnica com pH neutro, detalhamento e vitrificação.
 9. Montagem e Balanceamento dos Pneus: maquinário pneumático sem marcas.
 10. Diagnóstico Eletrônico com Scanner TEXA Axone na bancada.
 11. Proteção Veicular ELLO Benefícios: rastreador dedicado e guincho 24h no RJ.
+12. Atendimento via Seguro: orçamento, vistoria e reparos completos para motos seguradas.
 
 ## Regiões de Atendimento no Rio de Janeiro
 - Jacarepaguá e Anil (sede da oficina)
@@ -54,7 +49,7 @@ A menção a montadoras destina-se exclusivamente à indicação de compatibilid
 - Zona Oeste e Linha Amarela
 
 ## Rotas Principais
-- [Página Inicial](https://fastmotorio-site.vercel.app/): Galpão, catálogo, equipe e agendamento.
+- [Página Inicial](https://fastmotorio-site.vercel.app/): Oficina, marcas atendidas, serviços e agendamento.
 - [Canal de Conversão e WhatsApp](https://fastmotorio-site.vercel.app/obrigado.html): Transição direta para atendimento com a Lidiane.
 - [Política de Privacidade](https://fastmotorio-site.vercel.app/politica-de-privacidade.html): Conformidade integral com a LGPD (Lei 13.709/2018).
-- [Termos de Uso](https://fastmotorio-site.vercel.app/termos-de-uso.html): Regras de agendamento de elevador, validade de orçamentos e garantias.
+- [Termos de Uso](https://fastmotorio-site.vercel.app/termos-de-uso.html): Regras de agendamento, validade de orçamentos e garantias.

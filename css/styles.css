@@ -202,18 +202,42 @@ a {
 .header-cta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: var(--accent-racing);
   color: #FFFFFF;
-  padding: 10px 22px;
+  padding: 10px 20px;
   border-radius: 9999px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s ease;
   box-shadow: 0 0 16px rgba(220, 38, 38, 0.4);
+}
+
+.cta-wa-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.header-cta .cta-wa-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.service-cta .cta-wa-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.button-giant .cta-wa-icon {
+  width: 19px;
+  height: 19px;
 }
 
 .header-cta .cta-arrow {
