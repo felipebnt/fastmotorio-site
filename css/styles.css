@@ -3128,6 +3128,10 @@ a {
 }
 
 @media (max-width: 768px) {
+  .brands-title .text-nowrap {
+    display: block;
+  }
+
   .brands-track {
     animation-duration: 30s;
   }
