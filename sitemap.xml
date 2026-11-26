@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://fastmotorio-site.vercel.app/</loc>
+    <loc>https://fastmotorio.com.br/</loc>
     <lastmod>2026-11-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://fastmotorio-site.vercel.app/politica-de-privacidade.html</loc>
+    <loc>https://fastmotorio.com.br/politica-de-privacidade.html</loc>
     <lastmod>2026-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://fastmotorio-site.vercel.app/termos-de-uso.html</loc>
+    <loc>https://fastmotorio.com.br/termos-de-uso.html</loc>
     <lastmod>2026-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

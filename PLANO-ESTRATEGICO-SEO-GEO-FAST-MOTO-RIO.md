@@ -3,7 +3,7 @@
 **Autor:** BNT-SEO-MASTER (Head de SEO Estratégico, Busca Local e GEO)  
 **Destinatário:** BNT-CHIEF, BNT-DEV-LEAD, BNT-COPYWRITER  
 **Data:** 24 de Novembro de 2026  
-**Domínio Oficial:** https://fastmotorio-site.vercel.app | Sede: Rua Encontro Marcado, 174, Anil, Jacarepaguá, Rio de Janeiro - RJ
+**Domínio Oficial:** https://fastmotorio.com.br | Sede: Rua Encontro Marcado, 174, Anil, Jacarepaguá, Rio de Janeiro - RJ
 
 ---
 
@@ -68,14 +68,14 @@ Com base na auditoria direta realizada no código-fonte, estas são as implement
 #### C) Tag Canônica e Metadados Open Graph
 Inserção obrigatória no `<head>` de `index.html`:
 ```html
-<link rel="canonical" href="https://fastmotorio-site.vercel.app/">
+<link rel="canonical" href="https://fastmotorio.com.br/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Fast Moto Rio">
 <meta property="og:title" content="Fast Moto Rio | Oficina Especializada BMW, Triumph e Ducati no RJ">
 <meta property="og:description" content="Oficina de alta cilindrada no Anil, Jacarepaguá. Especialistas em BMW, Triumph e Ducati com Scanner TEXA, torque de manual e fotos da bancada no WhatsApp.">
-<meta property="og:url" content="https://fastmotorio-site.vercel.app/">
-<meta property="og:image" content="https://fastmotorio-site.vercel.app/images/fast-moto-1.jpg">
+<meta property="og:url" content="https://fastmotorio.com.br/">
+<meta property="og:image" content="https://fastmotorio.com.br/images/fast-moto-1.jpg">
 <meta name="twitter:card" content="summary_large_image">
 ```
 
@@ -180,7 +180,7 @@ O código JSON-LD de `index.html` foi estruturado para vincular as entidades de 
   "name": "Fast Moto Rio (Oficina Especializada em Média e Alta Cilindrada)",
   "alternateName": "Fast Moto Rio",
   "description": "Centro de excelência técnica para motocicletas BMW, Triumph, Ducati, Kawasaki e esportivas no Anil, Jacarepaguá. Diagnóstico TEXA e acompanhamento em tempo real.",
-  "url": "https://fastmotorio-site.vercel.app/",
+  "url": "https://fastmotorio.com.br/",
   "telephone": "+55-21-97287-3115",
   "priceRange": "$$$",
   "address": {

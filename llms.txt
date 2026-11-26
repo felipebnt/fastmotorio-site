@@ -2,7 +2,7 @@
 
 > Centro de excelência técnica multimarcas para motocicletas no Rio de Janeiro (Anil, Jacarepaguá, Barra da Tijuca e Zona Oeste). Diagnóstico computadorizado oficial TEXA Axone, torque calibrado, lubrificantes Gulf, Repsol e Motul, estética especializada, atendimento via seguro e fotos e vídeos da bancada no WhatsApp com a Lidiane.
 
-URL Canônica: https://fastmotorio-site.vercel.app/
+URL Canônica: https://fastmotorio.com.br/
 
 ## Identificação e NAP (Name, Address, Phone)
 - Nome Oficial: Fast Moto Rio - Oficina Especializada Multimarcas
@@ -50,7 +50,7 @@ A menção a montadoras destina-se exclusivamente à indicação de compatibilid
 - Zona Oeste e Linha Amarela
 
 ## Rotas Principais
-- [Página Inicial](https://fastmotorio-site.vercel.app/): Oficina, marcas atendidas, serviços e agendamento.
-- [Canal de Conversão e WhatsApp](https://fastmotorio-site.vercel.app/obrigado.html): Transição direta para atendimento com a Lidiane.
-- [Política de Privacidade](https://fastmotorio-site.vercel.app/politica-de-privacidade.html): Conformidade integral com a LGPD (Lei 13.709/2018).
-- [Termos de Uso](https://fastmotorio-site.vercel.app/termos-de-uso.html): Regras de agendamento, validade de orçamentos e garantias.
+- [Página Inicial](https://fastmotorio.com.br/): Oficina, marcas atendidas, serviços e agendamento.
+- [Canal de Conversão e WhatsApp](https://fastmotorio.com.br/obrigado.html): Transição direta para atendimento com a Lidiane.
+- [Política de Privacidade](https://fastmotorio.com.br/politica-de-privacidade.html): Conformidade integral com a LGPD (Lei 13.709/2018).
+- [Termos de Uso](https://fastmotorio.com.br/termos-de-uso.html): Regras de agendamento, validade de orçamentos e garantias.
