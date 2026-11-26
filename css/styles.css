@@ -3029,47 +3029,84 @@ a {
 .brand-item {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   min-height: 58px;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border-radius: 14px;
   border: 1px solid var(--border-subtle);
   background: rgba(20, 23, 30, 0.78);
-  color: var(--text-primary);
+  color: #CBD5E1;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
 
 .brand-item:hover {
   border-color: rgba(220, 38, 38, 0.55);
   background: var(--bg-surface-elevated);
+  color: var(--text-primary);
   transform: translateY(-2px);
 }
 
-.brand-icon {
+.brand-logo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--accent-gold);
   flex-shrink: 0;
-  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  color: inherit;
+  transition: color 0.25s ease, filter 0.25s ease;
 }
 
-.brand-icon svg {
-  width: 22px;
+.brand-logo svg {
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+.brand-logo--emblem {
+  height: 28px;
+}
+
+.brand-logo--honda {
+  height: 26px;
+}
+
+.brand-logo--harley-davidson {
+  height: 28px;
+}
+
+.brand-logo--haojue {
+  height: 26px;
+}
+
+.brand-logo--lockup {
+  height: 24px;
+}
+
+.brand-logo--wordmark {
   height: 22px;
 }
 
-.brand-item:hover .brand-icon {
-  color: var(--accent-racing-hover);
-  border-color: rgba(220, 38, 38, 0.4);
-  background: rgba(220, 38, 38, 0.1);
+.brand-logo--triumph {
+  height: 28px;
+}
+
+.brand-logo--royal-enfield {
+  height: 18px;
+}
+
+.brand-logo--ktm {
+  height: 20px;
+}
+
+.brand-logo--shineray {
+  height: 23px;
+}
+
+.brand-item:hover .brand-logo {
+  color: var(--text-primary);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.14));
 }
 
 .brand-name {
@@ -3078,7 +3115,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-primary);
+  color: inherit;
 }
 
 @keyframes brands-marquee-scroll {
@@ -3102,17 +3139,47 @@ a {
 
   .brand-item {
     min-height: 50px;
-    padding: 8px 15px;
+    padding: 8px 16px;
     gap: 10px;
   }
 
-  .brand-icon {
-    width: 30px;
-    height: 30px;
+  .brand-logo--emblem {
+    height: 24px;
   }
 
-  .brand-icon svg {
-    width: 19px;
+  .brand-logo--honda {
+    height: 22px;
+  }
+
+  .brand-logo--harley-davidson {
+    height: 24px;
+  }
+
+  .brand-logo--haojue {
+    height: 22px;
+  }
+
+  .brand-logo--lockup {
+    height: 20px;
+  }
+
+  .brand-logo--wordmark {
+    height: 19px;
+  }
+
+  .brand-logo--triumph {
+    height: 24px;
+  }
+
+  .brand-logo--royal-enfield {
+    height: 15px;
+  }
+
+  .brand-logo--ktm {
+    height: 17px;
+  }
+
+  .brand-logo--shineray {
     height: 19px;
   }
 
