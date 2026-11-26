@@ -251,6 +251,59 @@
   </script>
 </head>
 <body>
+  <div class="site-preloader" id="sitePreloader" role="status" aria-live="polite" aria-label="Carregando site Fast Moto Rio">
+    <img class="site-preloader-logo" src="images/logo-fast-moto-rio.svg" alt="Fast Moto Rio">
+    <div class="site-preloader-track" aria-hidden="true">
+      <div class="site-preloader-fill" id="sitePreloaderFill"></div>
+    </div>
+    <div class="site-preloader-ticks" aria-hidden="true">
+      <span class="major"></span><span></span><span></span><span class="major"></span><span></span><span></span><span class="major"></span><span></span><span></span><span class="major"></span><span></span><span></span><span class="major"></span>
+    </div>
+    <div class="site-preloader-counter"><strong id="sitePreloaderPct">0</strong>%</div>
+    <div class="site-preloader-caption">Preparando a bancada</div>
+  </div>
+  <script>
+  (function () {
+    var THRESHOLD = 250;
+    var CAP = 1800;
+    var start = performance.now();
+    var preloader = document.getElementById('sitePreloader');
+    var fill = document.getElementById('sitePreloaderFill');
+    var pct = document.getElementById('sitePreloaderPct');
+    var done = false;
+    function hide() { if (done) return; done = true; if (preloader) preloader.classList.add('is-done'); if (preloader) preloader.classList.remove('is-active'); }
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    if (reduced) { hide(); return; }
+    var thresholdTimer = setTimeout(function () {
+      if (done) return;
+      if (document.readyState === 'complete') { hide(); return; }
+      if (preloader) preloader.classList.add('is-active');
+      var showStart = performance.now();
+      function animate() {
+        if (done) return;
+        var elapsed = performance.now() - showStart;
+        var t = Math.min(1, elapsed / 1200);
+        var eased = 1 - Math.pow(1 - t, 3);
+        var value = Math.round(eased * 100);
+        if (fill) fill.style.width = value + '%';
+        if (pct) pct.textContent = value;
+        if (elapsed < 1200 && !done) requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    }, THRESHOLD);
+    window.addEventListener('load', function () {
+      var elapsed = performance.now() - start;
+      if (elapsed < THRESHOLD) {
+        clearTimeout(thresholdTimer);
+        hide();
+      } else {
+        setTimeout(hide, 200);
+      }
+    }, { once: true });
+    setTimeout(hide, CAP + 100);
+  })();
+  </script>
   <header class="site-header" data-header>
     <a class="brand" href="#inicio" aria-label="Fast Moto Rio - Início">
       <img src="images/logo-fast-moto-rio.svg" alt="Fast Moto Rio" class="brand-logo-img">
