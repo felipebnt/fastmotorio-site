@@ -572,4 +572,107 @@
       }, { passive: true });
     });
   })();
+
+  // 8. Lightbox de Zoom nas Fotos Reais da Oficina
+  (() => {
+    const photoCards = Array.from(document.querySelectorAll('.photo-card'));
+    if (!photoCards.length) return;
+
+    const items = photoCards
+      .map((card) => {
+        const img = card.querySelector('img');
+        const overlay = card.querySelector('.photo-overlay');
+        if (!img) return null;
+        return {
+          card,
+          src: img.getAttribute('src') || '',
+          alt: img.getAttribute('alt') || 'Foto da oficina Fast Moto Rio',
+          caption: (overlay && overlay.textContent ? overlay.textContent.trim() : '') || img.getAttribute('alt') || '',
+        };
+      })
+      .filter(Boolean);
+
+    if (!items.length) return;
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'photo-lightbox';
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'Visualização ampliada da foto');
+    lightbox.innerHTML = `
+      <button type="button" class="photo-lightbox-close" aria-label="Fechar foto ampliada">&times;</button>
+      <button type="button" class="photo-lightbox-nav photo-lightbox-prev" aria-label="Foto anterior">&#8249;</button>
+      <div class="photo-lightbox-stage">
+        <img class="photo-lightbox-img" src="" alt="" />
+        <p class="photo-lightbox-caption"></p>
+        <span class="photo-lightbox-counter"></span>
+      </div>
+      <button type="button" class="photo-lightbox-nav photo-lightbox-next" aria-label="Próxima foto">&#8250;</button>
+    `;
+    document.body.appendChild(lightbox);
+
+    const imgEl = lightbox.querySelector('.photo-lightbox-img');
+    const captionEl = lightbox.querySelector('.photo-lightbox-caption');
+    const counterEl = lightbox.querySelector('.photo-lightbox-counter');
+    const closeBtn = lightbox.querySelector('.photo-lightbox-close');
+    const prevBtn = lightbox.querySelector('.photo-lightbox-prev');
+    const nextBtn = lightbox.querySelector('.photo-lightbox-next');
+
+    let currentIndex = 0;
+
+    const render = () => {
+      const current = items[currentIndex];
+      if (!current) return;
+      imgEl.setAttribute('src', current.src);
+      imgEl.setAttribute('alt', current.alt);
+      captionEl.textContent = current.caption;
+      counterEl.textContent = `${currentIndex + 1} / ${items.length}`;
+    };
+
+    const openAt = (idx) => {
+      currentIndex = (idx + items.length) % items.length;
+      render();
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+    };
+
+    items.forEach((item, idx) => {
+      item.card.setAttribute('tabindex', '0');
+      item.card.setAttribute('role', 'button');
+      item.card.setAttribute('aria-label', `Ampliar foto: ${item.caption}`);
+      item.card.addEventListener('click', () => openAt(idx));
+      item.card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openAt(idx);
+        }
+      });
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openAt(currentIndex - 1);
+    });
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openAt(currentIndex + 1);
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') openAt(currentIndex - 1);
+      if (e.key === 'ArrowRight') openAt(currentIndex + 1);
+    });
+  })();
 })();

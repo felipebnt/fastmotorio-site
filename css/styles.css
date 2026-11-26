@@ -2759,3 +2759,133 @@ a {
     animation: none;
   }
 }
+
+/* Lightbox de Zoom nas Fotos Reais da Oficina */
+.photo-card {
+  cursor: zoom-in;
+}
+
+.photo-card img {
+  transition: transform 0.35s ease;
+}
+
+.photo-card:hover img {
+  transform: scale(1.03);
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(7, 8, 11, 0.94);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.photo-lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.photo-lightbox-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(94vw, 1180px);
+  max-height: 92vh;
+}
+
+.photo-lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  object-fit: contain;
+  background: #0b0c10;
+}
+
+.photo-lightbox-caption {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.92rem;
+  color: #e2e8f0;
+  line-height: 1.4;
+}
+
+.photo-lightbox-counter {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.photo-lightbox-close,
+.photo-lightbox-nav {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(15, 17, 23, 0.9);
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.photo-lightbox-close:hover,
+.photo-lightbox-nav:hover {
+  border-color: #e11d24;
+  background: rgba(225, 29, 36, 0.9);
+}
+
+.photo-lightbox-close {
+  top: 18px;
+  right: 18px;
+}
+
+.photo-lightbox-prev {
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.photo-lightbox-next {
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 640px) {
+  .photo-lightbox-nav {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    top: auto;
+    bottom: 18px;
+    transform: none;
+  }
+
+  .photo-lightbox-prev {
+    left: 20px;
+  }
+
+  .photo-lightbox-next {
+    right: 20px;
+  }
+}
