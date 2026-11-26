@@ -2915,3 +2915,207 @@ a {
     right: 20px;
   }
 }
+
+/* =========================================================
+   FAIXA MULTIMARCAS CONTINUA (LOGO APOS O HERO)
+   ========================================================= */
+.brands-section {
+  position: relative;
+  z-index: 3;
+  background: linear-gradient(180deg, #07080b 0%, var(--bg-deep) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-block: clamp(36px, 5vw, 56px);
+  overflow: hidden;
+}
+
+.brands-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 32px;
+  margin-bottom: clamp(24px, 3.4vw, 34px);
+}
+
+.brands-title {
+  margin: 8px 0 0;
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 2.8vw, 34px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.brands-title span {
+  color: var(--accent-racing);
+}
+
+.brands-sub {
+  margin: 0;
+  max-width: 520px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.brands-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+}
+
+.brands-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: brands-marquee-scroll 40s linear infinite;
+}
+
+.brands-marquee:hover .brands-track,
+.brands-marquee:focus-within .brands-track {
+  animation-play-state: paused;
+}
+
+.brands-list {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 16px 4px 0;
+}
+
+.brand-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 10px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(20, 23, 30, 0.78);
+  color: var(--text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+
+.brand-item:hover {
+  border-color: rgba(220, 38, 38, 0.55);
+  background: var(--bg-surface-elevated);
+  transform: translateY(-2px);
+}
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--accent-gold);
+  flex-shrink: 0;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.brand-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.brand-item:hover .brand-icon {
+  color: var(--accent-racing-hover);
+  border-color: rgba(220, 38, 38, 0.4);
+  background: rgba(220, 38, 38, 0.1);
+}
+
+.brand-name {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+@keyframes brands-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .brands-track {
+    animation-duration: 30s;
+  }
+
+  .brands-list {
+    gap: 12px;
+    padding-right: 12px;
+  }
+
+  .brand-item {
+    min-height: 50px;
+    padding: 8px 15px;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .brand-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .brand-name {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brands-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+    overflow-x: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .brands-track {
+    width: 100%;
+    animation: none;
+  }
+
+  .brands-list {
+    flex-wrap: wrap;
+    padding-right: 0;
+  }
+
+  .brands-list[aria-hidden="true"] {
+    display: none;
+  }
+}
