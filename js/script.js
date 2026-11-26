@@ -675,4 +675,35 @@
       if (e.key === 'ArrowRight') openAt(currentIndex + 1);
     });
   })();
+
+  // 9. Efeito Escalonado de Entrada nas Fotos da Oficina ao Rolar
+  (() => {
+    const cards = Array.from(document.querySelectorAll('.photo-card'));
+    if (!cards.length) return;
+
+    document.querySelectorAll('.garage-photos').forEach((group) => {
+      const groupCards = Array.from(group.querySelectorAll('.photo-card'));
+      groupCards.forEach((card, idx) => {
+        card.style.setProperty('--photo-delay', `${(idx % 4) * 90}ms`);
+      });
+    });
+
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cards.forEach((card) => card.classList.add('is-photo-visible'));
+      return;
+    }
+
+    const photoObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-photo-visible');
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    cards.forEach((card) => photoObserver.observe(card));
+  })();
 })();

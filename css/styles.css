@@ -2763,14 +2763,40 @@ a {
 /* Lightbox de Zoom nas Fotos Reais da Oficina */
 .photo-card {
   cursor: zoom-in;
+  opacity: 0;
+  transform: translateY(24px) scale(0.96);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1) var(--photo-delay, 0ms),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) var(--photo-delay, 0ms),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.photo-card.is-photo-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .photo-card img {
-  transition: transform 0.35s ease;
+  transform: scale(1.06);
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1) var(--photo-delay, 0ms);
 }
 
-.photo-card:hover img {
+.photo-card.is-photo-visible img {
+  transform: scale(1);
+}
+
+.photo-card.is-photo-visible:hover img {
   transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-card,
+  .photo-card img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 .photo-lightbox {
