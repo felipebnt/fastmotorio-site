@@ -80,6 +80,8 @@ Principais padrões de melhoria:
 - **sitemap.xml:** mapa do site para indexação.
 - **robots.txt:** diretrizes para crawlers.
 - **llms.txt:** arquivo para leitura por IAs (ChatGPT, Gemini, Perplexity).
+- **Google Search Console:** site verificado e indexado no Google Search Console para monitoramento de desempenho de busca, indexação de páginas, cobertura de erros e análise de cliques e impressões orgânicas.
+- **Google Tag Manager (GTM):** container configurado e implementado para gerenciamento centralizado de tags de rastreamento, incluindo eventos de conversão, cliques em botões CTA do WhatsApp e métricas de engajamento no site.
 - **Domínio próprio:** `https://fastmotorio.com.br` configurado na Vercel com tabela DNS para o Registro.br.
 - **Preparação para Google Meu Negócio:** o site foi estruturado para consistência total de NAP (Nome, Endereço, Telefone) com a ficha do Google Meu Negócio. Endereço no Anil, Jacarepaguá (Rua Encontro Marcado, 174, CEP 22765-270). WhatsApp oficial (21) 96880-1919. CNPJ 57.045.822/0001-06. Schema.org com dados estruturados de endereço, telefone, horários e avaliações para que o Google exiba informações consistentes na ficha e no Ask Maps (Gemini). A URL do site com parâmetros UTM (`?utm_source=google&utm_medium=organic&utm_campaign=gbp_perfil`) deve ser inserida no campo "Website" da ficha para rastrear visitas originadas do Google Maps.
 
